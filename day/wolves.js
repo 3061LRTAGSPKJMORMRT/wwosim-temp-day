@@ -39,7 +39,12 @@ module.exports = async client => {
   
   let votes = {} // make an object to store the votes - Object<UserId, Vote>
   let toKill = "0" // store a player to kill, in string - String
-   
+  
+  // get the wekeast wolf in game
+  let weakestWolf = alivePlayers.filter(a => strongWolves.includes(db.get(`player_${a}`))).map(a => [a, db.get(`player_${a}`).role]).sort((a, b) => strongWolves.indexOf(b[1]) - strongWolves.indexOf(a[1])) // fillter the wolves and check if there are any
+  if (!weakestWolf) return toKill // exit early if no wolf was found
+  
+  let attacker = db.get(`player_${weakestWolf[0][0]}`) // get the attacker object
   
   // loop through all the alive players and get the votes from werewolves
   alivePlayers.forEach(player => {
@@ -102,7 +107,7 @@ module.exports = async client => {
     // protection part
     
     // check if the player is a solo killer
-    if (["Bandit", "Corruptor", "Cannibal", "Illusionist", "Serial Killer", "Arsonist", "Bomber", "Alchemist", "Hacker"].includes(role)) {
+    if (["Bandit", "Corruptor", "Cannibal", "Illusionist", "Serial Killer", "Arsonist", "Bomber", "Alchemist", "Hacker", "Dreamcatcher"].includes(role)) {
         await werewolvesChat.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be ${kwwDied === true ? errMesg : "killed!"}`)
         return false
     }
@@ -158,7 +163,7 @@ module.exports = async client => {
       if (typeof getResult !== "object") {
         
       // check if the player they are attacking is healed by the tough guy
-      getResult = await toughGuy(client, guy) // checks if a tough guy is protecting them
+      getResult = await toughGuy(client, guy, attacker) // checks if a tough guy is protecting them
       if (getResult === true) return false // exits early if a tough guy IS protecting them
 
       // check if the player they are attacking is a red lady that got away visiting someone else
