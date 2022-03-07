@@ -48,7 +48,7 @@ module.exports = async client => {
     if (db.get(`player_${player}`).team === "Werewolf") {
       if (!votes[player]) votes[player] = 0 // if the key doesn't exist, create one
       votes[player] = db.get(`player_${player}`).vote // adds the vote      
-      db.delete(`player_${player.vote}`) // delete the votes to reset for the next night
+      db.delete(`player_${player}.vote`) // delete the votes to reset for the next night
     }
   })
   
@@ -93,7 +93,7 @@ module.exports = async client => {
       
     }
     
-    let guy = db.get(`player_${players[Number(toKill)-1]}`) // get the userid for the voted player
+    let guy = db.get(`player_${players[Number(toKill)-1]}`) // get the user for the voted player
     let role = guy.role
     
     let kwwDied = db.get(`kittenWolfConvert`)
