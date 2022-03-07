@@ -26,7 +26,7 @@ module.exports = async (client, guy) => {
         let channel = guild.channels.cache.get(db.get(`player_${player}`).channel) // get the channel object - Object
         await channel.send(`${getEmoji("heal", client)} Your protection saved **${players.indexOf(guy.id)+1} ${guy.username}**!`) // sends the message that they got alerted
         await channel.send(`${guild.roles.cache.find(r => r.name === "Alive")}`) // pings alive in the channel
-        break;
+        break; // break out of the loop
       }
     }
   }
