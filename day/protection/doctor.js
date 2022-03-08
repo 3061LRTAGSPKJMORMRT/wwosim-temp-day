@@ -10,6 +10,8 @@ module.exports = async (client, guy) => {
   const players = db.get(`players`) || [] // get the players array - Array<Snowflake>
   const alivePlayers = players.filter(p => db.get(`player_${p}`).status === "Alive") // get the alive players array - Array<Snowflake>
   const deadPlayers = players.filter(p => !alivePlayers.includes(p)) // get the dead players array - Array<Snowflake>
+  const isBerserkActive = db.get(`isBerserkActive`) // get the value of isBerserkActive
+  let allProtected = db.get(`berserkProtected`) || [] // get the array of players who protected the berserk's target
   
   let isProtected = false
   // loop through each player to see if they are a doctor
@@ -21,12 +23,18 @@ module.exports = async (client, guy) => {
       // check and see if the Doctor protected the attacked player
       if (db.get(`player_${player}`).protection === guy.id) {
         
-        // alert and exit early
-        isProtected = true // set the protection to true
-        let channel = guild.channels.cache.get(db.get(`player_${player}`).channel) // get the channel object - Object
-        await channel.send(`${getEmoji("heal", client)} Your protection saved **${players.indexOf(guy.id)+1} ${guy.username}**!`) // sends the message that they got alerted
-        await channel.send(`${guild.roles.cache.find(r => r.name === "Alive")}`) // pings alive in the channel
-        break; // break out of the loop
+        // checl if berserk is active
+        if (isBerserkActive === true) {
+          allProtected.push(player)
+          db.set(`berserkProtected`, allProtected)
+        } else {
+          
+          // alert and exit early
+          isProtected = true // set the protection to true
+          let channel = guild.channels.cache.get(db.get(`player_${player}`).channel) // get the channel object - Object
+          await channel.send(`${getEmoji("heal", client)} Your protection saved **${players.indexOf(guy.id)+1} ${guy.username}**!`) // sends the message that they got alerted
+          await channel.send(`${guild.roles.cache.find(r => r.name === "Alive")}`) // pings alive in the channel
+          break; // break out of the loop
       }
     }
   }
