@@ -103,6 +103,8 @@ module.exports = async client => {
     
     let kwwDied = db.get(`kittenWolfConvert`)
     
+    if (guy.status === "Dead") return "0"
+    
     // protection part
     
     // check if the player is a solo killer
@@ -172,7 +174,7 @@ module.exports = async client => {
     return typeof getResult === "object" ? getResult : guy // looks like there were no protections    
     
   } else {
-    return false // exit early if wolves selected no one to kill
+    return "0" // exit early if wolves selected no one to kill
   }
   
   
