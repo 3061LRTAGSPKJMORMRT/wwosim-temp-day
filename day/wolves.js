@@ -102,15 +102,11 @@ module.exports = async client => {
     let role = guy.role
     
     let kwwDied = db.get(`kittenWolfConvert`)
-    let errMesg = "converted into a Werewolf! They were either protected, a Headhunter's target or aren't from the village team."
     
     // protection part
     
     // check if the player is a solo killer
-    if (["Bandit", "Corruptor", "Cannibal", "Illusionist", "Serial Killer", "Arsonist", "Bomber", "Alchemist", "Hacker", "Dreamcatcher"].includes(role)) {
-        await werewolvesChat.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be ${kwwDied === true ? errMesg : "killed!"}`)
-        return false
-    }
+    if (["Bandit", "Corruptor", "Cannibal", "Illusionist", "Serial Killer", "Arsonist", "Bomber", "Alchemist", "Hacker", "Dreamcatcher"].includes(role)) return false // exit early if they are a solo killer
     
     let getResult;    
     
@@ -129,10 +125,8 @@ module.exports = async client => {
       })
       
       // check if they are a headhunter's target or do not belong to the village team
-      if (guy.team !== "Village" || headhunterTargets.includes(guy.id)) {
-        await werewolvesChat.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be ${errMesg}`) // send the error message
-        return false // exit early since they do not belong to the village or are the headhunter's target
-      }
+      if (guy.team !== "Village" || headhunterTargets.includes(guy.id)) return false // exit early since they do not belong to the village or are the headhunter's target
+      
     }
     
     // check if the player they are attacking is healed by the beast hunter
