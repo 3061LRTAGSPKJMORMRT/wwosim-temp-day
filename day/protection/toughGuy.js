@@ -34,9 +34,12 @@ module.exports = async (client, guy, attacker) => {
           
           // alert and exit early
           isProtected = true // set the protection to true
-          let channel = guild.channels.cache.get(db.get(`player_${player}`).channel) // get the channel object - Object
+          let channel = guild.channels.cache.get(db.get(`player_${player}`).channel) // get the tough guy's channel object - Object
+          let attackerChannel = guild.channels.cache.get(attacker.channel) // get the attacker's channel object - Object
           await channel.send(`${getEmoji("guard", client)} Your fought off an attack ${guy.id === player.id ? "" : `while protecting **${players.indexOf(guy.id)+1} ${guy.username}**`} and saw that **${players.indexOf(attacker.id)+1} ${attacker.username} (attacker.role ${getEmoji(attacker.role?.toLowerCase().replace(/\s/g, "_"))})** was the attacker!\n\nYou will die at the end of the day.`) // sends the message that they got alerted
           await channel.send(`${guild.roles.cache.find(r => r.name === "Alive")}`) // pings alive in the channel
+          await attackerChannel.send(`${getEmoji("guard", client)} Player **${players.indexOf(attacker)+1} ${attacker.username}** is a **Tough Guy**! They now know your role!`) // sends a message to the attacker saying that the tough guy knows them
+          await attackerChannel.send(`${guild.roles.cache.find(r => r.name === "Alive")}`) // pings alive in the attacker's channel
           db.set(`player_${player}.wounded`, true) // set that they are wounded
           break; // break out of the loop
         }
