@@ -115,6 +115,8 @@ module.exports = async client => {
     // check if kwwDied and check if they do not belong to the village or are the headhunter's target
     if (kwwDied === true) {
       
+      db.delete(`isBerserkActive`) // disable berserk
+      
       let headhunterTargets = [] // an array of headhunter targets to be put in - Array<Snowflake>
       
       // get all the headhunter targets
