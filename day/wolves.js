@@ -131,6 +131,9 @@ module.exports = async client => {
       
     }
     
+    // set the database of the player
+    db.set(`wolvesVote`, guy.id)
+    
     // check if the player they are attacking is healed by the beast hunter
     getResult = await beastHunter(client, guy) // checks if a beast hunter has a trap on them
     if (getResult === true) return false // exits early if a beast hunter DOES have a trap on them
