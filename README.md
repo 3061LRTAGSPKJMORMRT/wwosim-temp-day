@@ -59,7 +59,7 @@ No, I will not call it Wolvesville
 
 
 
-# Legend:
+### Legend:
 🟢 Completed                      <br>
 🟡 In-progress                    <br>
 🟠 Planned to do next             <br>
