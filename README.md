@@ -43,7 +43,6 @@ No, I will not call it Wolvesville
 🔴 Zombie converting              <br>
 🔴 Zombie dying                   <br>
 🔴 Grumpy Grandma muting          <br>
-🔴 Marksman confirming target     <br>
 🔴 Jailer releasing target        <br>
 🔴 Nightmared players wake up     <br>
 🔴 Red lady visiting results      <br>
