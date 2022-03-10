@@ -42,13 +42,17 @@ module.exports = {
     if (getWolves !== false) { // checks if the wolves have killed someone
       
       // check if kww 
-      if (db.get(`kittenWolfConvert`) === true || getWolves.role === "Cursed") {
+      if (db.get(`kittenWolfConvert`) === true) {
         await kittenwolf(client, getWolves.id)
       } else {
-        db.set(`player_${getWolves.id}.status`, "Dead")
-        await message.guild.members.cache.get(getWolves.id)?.roles.add(deadRole.id)
-        await message.guild.members.cache.get(getWolves.id)?.roles.remove(aliveRole.id)
-        await dayChat.send(`${getEmoji("werewolf", client)} The Werewolves killed **${players.indexOf(getWolves)+1} ${getWolves.username} (${getWolves.role} ${getEmoji(getWolves.role?.toLowerCase()?.replace(/\s/g, "_"))})**!`)
+        if (getWolves.role === "Cursed") { // check if the role is cursed
+           await kittenwolf(client, getWolves.id)
+        } else {
+          db.set(`player_${getWolves.id}.status`, "Dead") // otherwise kill the player normally
+          await message.guild.members.cache.get(getWolves.id)?.roles.add(deadRole.id)
+          await message.guild.members.cache.get(getWolves.id)?.roles.remove(aliveRole.id)
+          await dayChat.send(`${getEmoji("werewolf", client)} The Werewolves killed **${players.indexOf(getWolves)+1} ${getWolves.username} (${getWolves.role} ${getEmoji(getWolves.role?.toLowerCase()?.replace(/\s/g, "_"))})**!`)
+        }
         
         // check for berserk
         let allBerserks = db.get(`berserkProtected`) || []
