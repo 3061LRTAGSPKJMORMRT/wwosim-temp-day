@@ -14,10 +14,10 @@ No, I will not call it Wolvesville
 ## Progress:
 🟢 Werewolf killing               <br>
 🟢 Werewolf Frenzy                <br>
+🟢 Kitten Wolf Converting         <br>
+🟢 Cursed Converting              <br>
 🟢 Doctor protecing               <br>
 🟢 Tough Guy protecting           <br>
-🟡 Kitten Wolf Converting         <br>
-🟡 Cursed Converting              <br>
 🟠 Beast Hunter trap              <br>
 🟠 Ghost Lady protection          <br>
 🟠 Jailer protection              <br>
