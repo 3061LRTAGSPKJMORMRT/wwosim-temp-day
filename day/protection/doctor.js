@@ -3,7 +3,7 @@ const { getRole, getEmoji } = require("../../../config") // functions
 
 module.exports = async (client, guy, attacker) => {
   
-  if (typeof guy !== "object") return false // makes sure if "guy" is an object, otherwise exit early
+  if (typeof guy !== "object" || typeof attacker !== "object") return false // makes sure if "guy" and "attacker" is an object, otherwise exit early
   
   // define all the variables
   const guild = client.guilds.cache.get("890234659965898813") // get the guild object - Object
