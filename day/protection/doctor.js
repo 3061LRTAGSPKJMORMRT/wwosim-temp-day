@@ -1,7 +1,7 @@
 const db = require("quick.db") // database
 const { getRole, getEmoji } = require("../../../config") // functions
 
-module.exports = async (client, guy) => {
+module.exports = async (client, guy, attacker) => {
   
   if (typeof guy !== "object") return false // makes sure if "guy" is an object, otherwise exit early
   
@@ -23,8 +23,8 @@ module.exports = async (client, guy) => {
       // check and see if the Doctor protected the attacked player
       if (db.get(`player_${player}`).protection === guy.id) {
         
-        // checl if berserk is active
-        if (isBerserkActive === true) {
+        // check if berserk is active
+        if (isBerserkActive === true && attacker.team === "Werewolf") {
           allProtected.push(player)
           db.set(`berserkProtected`, allProtected)
         } else {
