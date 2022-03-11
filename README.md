@@ -18,7 +18,7 @@ No, I will not call it Wolvesville
 🟢 Cursed Converting              <br>
 🟢 Doctor protecing               <br>
 🟢 Tough Guy protecting           <br>
-🟡 Beast Hunter trap              <br>
+🟢 Beast Hunter trap              <br>
 🟡 Ghost Lady protection          <br>
 🟡 Jailer protection              <br>
 🟡 Bodyguard protection           <br>
