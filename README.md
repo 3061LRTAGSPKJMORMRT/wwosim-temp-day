@@ -18,30 +18,30 @@ No, I will not call it Wolvesville
 🟢 Cursed Converting              <br>
 🟢 Doctor protecing               <br>
 🟢 Tough Guy protecting           <br>
-🟠 Beast Hunter trap              <br>
-🟠 Ghost Lady protection          <br>
-🟠 Jailer protection              <br>
-🟠 Bodyguard protection           <br>
-🟠 Red Lady protection            <br>
-🟠 Witch protection               <br>
-🟠 Forger sheild protection       <br>
-🔴 Accomplice attacking           <br>
-🔴 Alchemist attacking            <br>
-🔴 Arsonist dousing               <br>
-🔴 Bandit attacking               <br>
-🔴 Bandit converting              <br>
-🔴 Bomber's bomb placement        <br>
-🔴 Cannibal attacking             <br>
-🔴 Corruptor attacking            <br>
-🔴 Dreamcatcher attacking         <br>
-🔴 Evil Detective attacking       <br>
-🔴 Hacker attacking               <br>
-🔴 Illusionist deluding           <br>
-🔴 Sect Leader converting         <br>
-🔴 Serial Killer attacking        <br>
-🔴 Zombie biting                  <br>
-🔴 Zombie converting              <br>
-🔴 Zombie dying                   <br>
+🟡 Beast Hunter trap              <br>
+🟡 Ghost Lady protection          <br>
+🟡 Jailer protection              <br>
+🟡 Bodyguard protection           <br>
+🟡 Red Lady protection            <br>
+🟡 Witch protection               <br>
+🟡 Forger sheild protection       <br>
+🟠 Accomplice attacking           <br>
+🟠 Alchemist attacking            <br>
+🟠 Arsonist dousing               <br>
+🟠 Bandit attacking               <br>
+🟠 Bandit converting              <br>
+🟠 Bomber's bomb placement        <br>
+🟠 Cannibal attacking             <br>
+🟠 Corruptor attacking            <br>
+🟠 Dreamcatcher attacking         <br>
+🟠 Evil Detective attacking       <br>
+🟠 Hacker attacking               <br>
+🟠 Illusionist deluding           <br>
+🟠 Sect Leader converting         <br>
+🟠 Serial Killer attacking        <br>
+🟠 Zombie biting                  <br>
+🟠 Zombie converting              <br>
+🟠 Zombie dying                   <br>
 🔴 Grumpy Grandma muting          <br>
 🔴 Jailer releasing target        <br>
 🔴 Nightmared players wake up     <br>
