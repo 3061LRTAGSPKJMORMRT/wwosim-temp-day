@@ -23,8 +23,8 @@ module.exports = async (client, guy, attacker) => {
       // check and see if the tough guy protected the attacked player or is the attacked player
       if (db.get(`player_${player}`).protection === guy.id || guy.id === player) {
         
-        // check if berserk is active
-        if (isBerserkActive === true) {
+        // check if berserk is active and the attacker is from the werewolves' team
+        if (isBerserkActive === true && attacker.team === "Werewolf") {
           
           // add the protector in the database
           const isBerserkActive = db.get(`isBerserkActive`) // get the value of isBerserkActive
