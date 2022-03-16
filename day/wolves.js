@@ -172,7 +172,7 @@ module.exports = async client => {
       if (getResult === true) return false // exits early if the red lady IS not home
 
       // check if the player they are protecting has the forger's sheild
-      getResult = await forger(client, guy, attacker) // checks if the player has the forger's sheild
+      getResult = await forger(client, guy) // checks if the player has the forger's sheild
       if (getResult === true) return false // exits early if the player DOES have the forger's sheild
     }
     
