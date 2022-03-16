@@ -7,7 +7,6 @@ module.exports = async (client, guy) => {
   
   // define all the variables
   const guild = client.guilds.cache.get("890234659965898813") // get the guild object - Object
-  let allProtected = db.get(`berserkProtected`) || [] // get the array of players who protected the berserk's target
   
   let isProtected = false
   
