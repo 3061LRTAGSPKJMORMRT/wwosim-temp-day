@@ -27,8 +27,6 @@ module.exports = async (client, guy, attacker) => {
         if (isBerserkActive === true && attacker.team === "Werewolf") {
           
           // add the protector in the database
-          const isBerserkActive = db.get(`isBerserkActive`) // get the value of isBerserkActive
-          let allProtected = db.get(`berserkProtected`) || [] // get the array of players who protected the berserk's target
           let channel = guild.channels.cache.get(db.get(`player_${player}`).channel) // get the tough guy's channel object - Object
           let attackerChannel = guild.channels.cache.get(attacker.channel) // get the attacker's channel object - Object
           await channel.send(`${getEmoji("guard", client)} Your fought off an attack ${guy.id === player.id ? "" : `while protecting **${players.indexOf(guy.id)+1} ${guy.username}**`} and saw that **${players.indexOf(attacker.id)+1} ${attacker.username} (attacker.role ${getEmoji(attacker.role?.toLowerCase().replace(/\s/g, "_"))})** was the attacker!\n\nYou will die at the end of the day.`) // sends the message that they got alerted
