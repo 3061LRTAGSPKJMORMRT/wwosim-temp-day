@@ -23,8 +23,8 @@ No, I will not call it Wolvesville
 🟢 Witch protection               <br>
 🟢 Red Lady protection            <br>
 🟢 Forger sheild protection       <br>
-🟡 Ghost Lady protection          <br>
-🟡 Bodyguard protection           <br>
+🟢 Ghost Lady protection          <br>
+🟢 Bodyguard protection           <br>
 🟠 Accomplice attacking           <br>
 🟠 Alchemist attacking            <br>
 🟠 Arsonist dousing               <br>
