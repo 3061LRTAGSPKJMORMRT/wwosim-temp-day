@@ -137,27 +137,27 @@ module.exports = async client => {
     db.set(`wolvesVote`, guy.id)
     
     // check if the player they are attacking is healed by the beast hunter
-    getResult = await beastHunter(client, guy) // checks if a beast hunter has a trap on them
+    getResult = await beastHunter(client, guy, attacker) // checks if a beast hunter has a trap on them
     if (getResult === true) return false // exits early if a beast hunter DOES have a trap on them
     
     // check if the player they are attacking is jailed
-    getResult = await jailer(client, guy) // checks if they are jailed
+    getResult = await jailer(client, guy, attacker) // checks if they are jailed
     if (getResult === true) return false // exits early if they are jailed
     
     // check if the player they are attacking is healed by the ghost lady
-    getResult = await ghostLady(client, guy) // checks if a ghost lady is protecting them
+    getResult = await ghostLady(client, guy, attacker) // checks if a ghost lady is protecting them
     if (getResult === true) return false // exits early if a ghost lady IS protecting them
     
     // check if the player they are attacking is healed by the doctor
-    getResult = await doctor(client, guy) // checks if a doctor is protecting them
+    getResult = await doctor(client, guy, attacker) // checks if a doctor is protecting them
     if (getResult === true) return false // exits early if a doctor IS protecting them
     
     // check if the player they are attacking is healed by the witch
-    getResult = await witch(client, guy) // checks if a witch is protecting them
+    getResult = await witch(client, guy, attacker) // checks if a witch is protecting them
     if (getResult === true) return false // exits early if a witch IS protecting them
     
     // check if the player they are attacking is healed by the bodyguard
-    getResult = await bodyguard(client, guy) // checks if a bodyguard is protecting them
+    getResult = await bodyguard(client, guy, attacker) // checks if a bodyguard is protecting them
     if (getResult === true) return false // exits early if a bodyguard IS protecting them
     
     // check if getResult isn't an object
@@ -168,11 +168,11 @@ module.exports = async client => {
       if (getResult === true) return false // exits early if a tough guy IS protecting them
 
       // check if the player they are attacking is a red lady that got away visiting someone else
-      getResult = await redLady(client, guy) // checks if the red lady is not home
+      getResult = await redLady(client, guy, attacker) // checks if the red lady is not home
       if (getResult === true) return false // exits early if the red lady IS not home
 
       // check if the player they are protecting has the forger's sheild
-      getResult = await forger(client, guy) // checks if the player has the forger's sheild
+      getResult = await forger(client, guy, attacker) // checks if the player has the forger's sheild
       if (getResult === true) return false // exits early if the player DOES have the forger's sheild
     }
     
