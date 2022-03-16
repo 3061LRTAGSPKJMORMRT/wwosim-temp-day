@@ -19,11 +19,11 @@ No, I will not call it Wolvesville
 🟢 Doctor protecing               <br>
 🟢 Tough Guy protecting           <br>
 🟢 Beast Hunter trap              <br>
+🟢 Jailer protection              <br>
+🟢 Witch protection               <br>
 🟡 Ghost Lady protection          <br>
-🟡 Jailer protection              <br>
 🟡 Bodyguard protection           <br>
 🟡 Red Lady protection            <br>
-🟡 Witch protection               <br>
 🟡 Forger sheild protection       <br>
 🟠 Accomplice attacking           <br>
 🟠 Alchemist attacking            <br>
