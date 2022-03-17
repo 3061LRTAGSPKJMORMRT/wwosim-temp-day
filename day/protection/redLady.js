@@ -28,8 +28,8 @@ module.exports = async (client, guy, attacker) => {
         let channel = guild.channels.cache.get(guy.channel) // gets the channel
         isProtected = true // set isProtected to true
         db.delete(`player_${guy.id}.shield`) // removes the shield
-        channel.send(`${getEmoji("guard", client)} Someone tried to kill you while you were away!`) // sends a message to the attacked player
-        channel.send(`${guild.roles.cache.find(r => r.name === "Alive")}`) // pings the alive role
+        await channel.send(`${getEmoji("guard", client)} Someone tried to kill you while you were away!`) // sends a message to the attacked player
+        await channel.send(`${guild.roles.cache.find(r => r.name === "Alive")}`) // pings the alive role
       }
       
     }
