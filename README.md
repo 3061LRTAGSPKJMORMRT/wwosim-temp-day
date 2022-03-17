@@ -25,8 +25,8 @@ No, I will not call it Wolvesville
 🟢 Forger sheild protection       <br>
 🟢 Ghost Lady protection          <br>
 🟢 Bodyguard protection           <br>
+🟢 Serial Killer attacking        <br>
 🟡 Corruptor attacking            <br>
-🟡 Serial Killer attacking        <br>
 🟡 Arsonist dousing               <br>
 🟡 Cannibal attacking             <br>
 🟠 Accomplice attacking           <br>
