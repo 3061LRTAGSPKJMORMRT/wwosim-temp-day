@@ -25,20 +25,20 @@ No, I will not call it Wolvesville
 🟢 Forger sheild protection       <br>
 🟢 Ghost Lady protection          <br>
 🟢 Bodyguard protection           <br>
+🟡 Corruptor attacking            <br>
+🟡 Serial Killer attacking        <br>
+🟡 Arsonist dousing               <br>
+🟡 Cannibal attacking             <br>
 🟠 Accomplice attacking           <br>
 🟠 Alchemist attacking            <br>
-🟠 Arsonist dousing               <br>
 🟠 Bandit attacking               <br>
 🟠 Bandit converting              <br>
 🟠 Bomber's bomb placement        <br>
-🟠 Cannibal attacking             <br>
-🟠 Corruptor attacking            <br>
 🟠 Dreamcatcher attacking         <br>
 🟠 Evil Detective attacking       <br>
 🟠 Hacker attacking               <br>
 🟠 Illusionist deluding           <br>
 🟠 Sect Leader converting         <br>
-🟠 Serial Killer attacking        <br>
 🟠 Zombie biting                  <br>
 🟠 Zombie converting              <br>
 🟠 Zombie dying                   <br>
