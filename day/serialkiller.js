@@ -83,23 +83,23 @@ module.exports = client => {
       if (guy.status === "Alive") {
         
         // check for any protections
-        let result = await getProtections(client, guy, attacker)
+        let result = await getProtections(client, guy, attacker) // returns - Promise<Object|Boolean>
         
         // check if the result type is an object - indicating that there were no protections
         if (typeof result === "object") {
           
           // send a message to the day chat and make the player dead
-          db.set(`player_${guy.id}.status`, "Dead")          
-          let attackedPlayer = await guild.members.fetch(guy.id) // fetch the discord member - Object
+          db.set(`player_${result.id}.status`, "Dead")          
+          let attackedPlayer = await guild.members.fetch(result.id) // fetch the discord member - Object
           let attackedPlayerRoles = attackedPlayer.roles.cache.map(r => r.name === "Alive" ? "892046207428476989" : r.id) // get all the roles and replace the Alive role with Dead.
-          await dayChat.send(`${getEmoji("stab", client)} The Serial Killer stabbed **${players.indexOf(guy.id)+1} ${guy.username} (${getEmoji(guy.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${guy.role})**!`)
-          await attackedPlayer.roles.set(attackedPlayerRoles)          
+          await dayChat.send(`${getEmoji("stab", client)} The Serial Killer stabbed **${players.indexOf(result.id)+1} ${result.username} (${getEmoji(result.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${result.role})**!`)
+          await attackedPlayer.roles.set(attackedPlayerRoles) // removes the Alive and adds the Dead discord role
           
         } else { // otherwise they were protected
           
-          let channel = guild.channels.cache.get(attacker.channel)
-          await channel.send(`${getEmoji("guard", client)} Player **${players.indexOf(guy.id)+1} ${guy.username}** could not be killed!`)
-          await channel.send(`${guild.roles.cache.find(r => r.name === "Alive")}`)
+          let channel = guild.channels.cache.get(attacker.channel) // get the channel object - Object
+          await channel.send(`${getEmoji("guard", client)} Player **${players.indexOf(guy.id)+1} ${guy.username}** could not be killed!`) // sends an error message
+          await channel.send(`${guild.roles.cache.find(r => r.name === "Alive")}`) // pings the player in the channel
         
         }
         
@@ -109,6 +109,6 @@ module.exports = client => {
     
   }
   
-  return true
+  return true // exit early
   
 }
