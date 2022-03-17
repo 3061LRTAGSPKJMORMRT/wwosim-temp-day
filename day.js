@@ -8,9 +8,10 @@ module.exports = {
     const deadRole = message.guild.roles.cache.find(r => r.name === "Dead") // get the dead role - Object
     const players = db.get(`players`) // get the players
     
+    // get all the actions
     let wolves = require("./day/wolves.js")
     let kittenwolf = require("./day/kittenWolf.js")
-    let serialkillers = require("./day/wolves.js")
+    let serialkillers = require("./day/serialkillers.js")
     let bandits = require("./day/wolves.js")
     let cannibals = require("./day/wolves.js")
     let zombies = require("./day/wolves.js")
@@ -21,7 +22,48 @@ module.exports = {
     let alchemists = require("./day/wolves.js")
     let sectleader = require("./day/wolves.js")
     let grumpygrandmas = require("./day/wolves.js")
-    let beasthunters = require("./day/wolves.js")
+    
+    // wolves function because berserk, urgh
+    function theWolves() {
+      let getWolves = await wolves(client)
+      if (getWolves !== false) { // checks if the wolves have killed someone
+
+        // check if kww 
+        if (db.get(`kittenWolfConvert`) === true) {
+          await kittenwolf(client, getWolves.id)
+        } else {
+          if (getWolves.role === "Cursed") { // check if the role is cursed
+             await kittenwolf(client, getWolves.id)
+          } else {
+            db.set(`player_${getWolves.id}.status`, "Dead") // otherwise kill the player normally
+            let attackedPlayer = await message.guild.members.fetch(getWolves.id) // get the discord member - Object
+            let attackedPlayerRoles = attackedPlayer.roles.cache.map(r => r.name === "Alive" ? "892046207428476989" : r.id) // get the discord roles - Array<Snowflake>
+            await attackedPlayer.roles.set(attackedPlayerRoles) // set the correct roles
+            await dayChat.send(`${getEmoji("werewolf", client)} The Werewolves killed **${players.indexOf(getWolves)+1} ${getWolves.username} (${getWolves.role} ${getEmoji(getWolves.role?.toLowerCase()?.replace(/\s/g, "_"))})**!`)
+          }
+
+          // check for berserk
+          let allBerserks = db.get(`berserkProtected`) || []
+          for (let bplayer of allBerserks) {
+            if (db.get(`player_${bplayer}`).status === "Alive") {
+              db.set(`player_${bplayer}.status`, "Dead")
+              let attackedPlayer = await message.guild.members.fetch(bplayer) // get the discord member - Object
+              let attackedPlayerRoles = attackedPlayer.roles.cache.map(r => r.name === "Alive" ? "892046207428476989" : r.id) // get the discord roles - Array<Snowflake>
+              await attackedPlayer.roles.set(attackedPlayerRoles) // set the correct roles
+              await dayChat.send(`${getEmoji("frenzy", client)} The Werewolf frenzy killed **${players.indexOf(bplayer)+1} ${db.get(`player_${bplayer}`).username} (${db.get(`player_${bplayer}`).role} ${getEmoji(db.get(`player_${bplayer}`).role?.toLowerCase()?.replace(/\s/g, "_"))})**!`)
+            }
+          }
+        }
+      } else { 
+
+        // send a message to the chat
+        let wolfy = db.get(`wolvesVote`) || "0"
+        if (wolfy !== "0") wolfy = db.get(`player_${`wolvesVote`}`)
+        let errMesg = "attacked!"
+        if (db.get(`kittenWolfConvert`) === true) errMesg = "could not be converted into a Werewolf! They were either protected, is a Headhunter's target, or they aren't from the village."
+        await werewolvesChat.send(`${getEmoji("guard", client)} Player **${players.indexOf(wolfy.id)+1} ${wolfy.username}** could not be ${errMesg}`)
+      }
+    }
     
     // forger doing their job
 
@@ -29,7 +71,13 @@ module.exports = {
     
     // prognosticator peace doing their job
     
+    // if berserk is activated, wolves come first
+    if (db.get(`isBerserkActive`) === true) {
+      await theWolves()
+    }
+    
     // serial killer doing their job
+    await serialkillers(client)
     
     // cannibal doing their job
     
@@ -37,43 +85,10 @@ module.exports = {
     
     // dreamcatcher doing their job
     
-    // wolves doing their job
-    let getWolves = await wolves(client)
-    if (getWolves !== false) { // checks if the wolves have killed someone
-      
-      // check if kww 
-      if (db.get(`kittenWolfConvert`) === true) {
-        await kittenwolf(client, getWolves.id)
-      } else {
-        if (getWolves.role === "Cursed") { // check if the role is cursed
-           await kittenwolf(client, getWolves.id)
-        } else {
-          db.set(`player_${getWolves.id}.status`, "Dead") // otherwise kill the player normally
-          await message.guild.members.cache.get(getWolves.id)?.roles.add(deadRole.id)
-          await message.guild.members.cache.get(getWolves.id)?.roles.remove(aliveRole.id)
-          await dayChat.send(`${getEmoji("werewolf", client)} The Werewolves killed **${players.indexOf(getWolves)+1} ${getWolves.username} (${getWolves.role} ${getEmoji(getWolves.role?.toLowerCase()?.replace(/\s/g, "_"))})**!`)
-        }
-        
-        // check for berserk
-        let allBerserks = db.get(`berserkProtected`) || []
-        for (let bplayer of allBerserks) {
-          if (db.get(`player_${bplayer}`).status === "Alive") {
-            db.set(`player_${bplayer}.status`, "Dead")
-            await message.guild.members.cache.get(bplayer)?.roles.add(deadRole.id) // add the dead role
-            await message.guild.members.cache.get(bplayer)?.roles.remove(aliveRole.id) // remove the alive role
-            await dayChat.send(`${getEmoji("frenzy", client)} The Werewolf frenzy killed **${players.indexOf(bplayer)+1} ${db.get(`player_${bplayer}`).username} (${db.get(`player_${bplayer}`).role} ${getEmoji(db.get(`player_${bplayer}`).role?.toLowerCase()?.replace(/\s/g, "_"))})**!`)
-          }
-        }
-      }
-    } else { 
-      
-      // send a message to the chat
-      let wolfy = db.get(`wolvesVote`) || "0"
-      if (wolfy !== "0") wolfy = db.get(`player_${`wolvesVote`}`)
-      let errMesg = "attacked!"
-      if (db.get(`kittenWolfConvert`) === true) errMesg = "could not be converted into a Werewolf! They were either protected, is a Headhunter's target, or they aren't from the village."
-      await werewolvesChat.send(`${getEmoji("guard", client)} Player **${players.indexOf(wolfy.id)+1} ${wolfy.username}** could not be ${errMesg}`)
-    } 
+    // wolves doing their job last if berserk is not active
+    if (db.get(`isBerserkActive`) !== true) {
+      await theWolves()
+    }
     
   }
 }
