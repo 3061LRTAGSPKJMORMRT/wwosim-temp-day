@@ -19,7 +19,7 @@ async function getProtections(client, guy, attacker) {
 
 }
 
-module.exports = client => {
+module.exports = async client => {
 
   // define all the variables
   const guild = client.guilds.cache.get("890234659965898813") // get the guild object - Object
@@ -43,11 +43,12 @@ module.exports = client => {
       
         let guy = db.get(`player_${target}`)
 
-        // check if the sk's target is alive
+        // check if the arso's target is alive
         if (guy.status === "Alive") {
 
           // check for any protections
           let result = await getProtections(client, guy, attacker) // returns - Promise<Object|Boolean>
+          let channel = guild.channels.cache.get(attacker.channel) // get the channel object - Object
 
           // check if the result type is an object - indicating that there were no protections
           if (typeof result === "object") {
@@ -56,10 +57,10 @@ module.exports = client => {
             let doused = db.set(`player_${attacker.id}.doused`) || [] // get the doused players
             doused.push(guy.id) // push the current doused player
             db.set(`player_${attacker.id}.doused`, doused) // set the new value of the doused players
+            await channel.send(`${getEmoji("doused", client)} Player **${players.indexOf(guy.id)+1} ${guy.username}** has been doused.`) // sends a success message
 
           } else { // otherwise they were protected
 
-            let channel = guild.channels.cache.get(attacker.channel) // get the channel object - Object
             await channel.send(`${getEmoji("guard", client)} Player **${players.indexOf(guy.id)+1} ${guy.username}** could not be doused!`) // sends an error message
             await channel.send(`${guild.roles.cache.find(r => r.name === "Alive")}`) // pings the player in the channel
 
