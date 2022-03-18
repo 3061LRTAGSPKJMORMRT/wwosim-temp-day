@@ -92,7 +92,7 @@ module.exports = client => {
           
           // corrupt the player
           db.set(`player_${guy.id}.corrupted`, true)
-          await channel.send(`${getEmoji("corrupt", client)} Player **${players.indexOf(guy.id)+1} ${guy.username}** could has been corrupted!`) // sends a succesful message
+          await channel.send(`${getEmoji("corrupt", client)} Player **${players.indexOf(result.id)+1} ${result.username}** has been corrupted!`) // sends a succesful message
           
         } else { // otherwise they were protected
           
