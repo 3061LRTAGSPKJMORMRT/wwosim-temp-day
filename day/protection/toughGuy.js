@@ -45,6 +45,11 @@ module.exports = async (client, guy, attacker) => {
           await attackerChannel.send(`${getEmoji("guard", client)} Player **${players.indexOf(attacker)+1} ${attacker.username}** is a **Tough Guy**! They now know your role!`) // sends a message to the attacker saying that the tough guy knows them
           await attackerChannel.send(`${guild.roles.cache.find(r => r.name === "Alive")}`) // pings alive in the attacker's channel
           db.set(`player_${player}.wounded`, true) // set that they are wounded
+          
+          // make an exemption if the attacker is a corruptor
+          if (attacker.role === "Corruptor") {
+            isProtected = db.get(`player_${player}`) // set the tough guy as the corrupted player
+          }
           break; // break out of the loop
         }
       }
