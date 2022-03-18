@@ -7,13 +7,15 @@ module.exports = {
     const aliveRole = message.guild.roles.cache.find(r => r.name === "Alive") // get the alive role - Object
     const deadRole = message.guild.roles.cache.find(r => r.name === "Dead") // get the dead role - Object
     const players = db.get(`players`) // get the players
+    const alivePlayers = players.fillter(player => db.get(`player_${player}`).status === "Alive")
+    const deadPlayers = players.filter(player => !alivePlayers.includes(player))
     
     // get all the actions
     let wolves = require("./day/wolves.js")
     let kittenwolf = require("./day/kittenWolf.js")
     let serialkillers = require("./day/serialkillers.js")
     let bandits = require("./day/wolves.js")
-    let cannibals = require("./day/wolves.js")
+    let cannibals = require("./day/cannibals.js")
     let zombies = require("./day/wolves.js")
     let corruptors = require("./day/wolves.js")
     let arsonists = require("./day/wolves.js")
@@ -25,7 +27,7 @@ module.exports = {
     
     // wolves function because berserk, urgh
     function theWolves() {
-      let getWolves = await wolves(client)
+      let getWolves = await wolves(client, alivePlayers)
       if (getWolves !== false) { // checks if the wolves have killed someone
 
         // check if kww 
@@ -77,9 +79,10 @@ module.exports = {
     }
     
     // serial killer doing their job
-    await serialkillers(client)
+    await serialkillers(client, alivePlayers)
     
     // cannibal doing their job
+    await cannibals(client, alivePlayers)
     
     // hacker doing their job
     
