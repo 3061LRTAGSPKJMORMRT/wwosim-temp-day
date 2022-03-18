@@ -69,7 +69,7 @@ module.exports = client => {
   const deadPlayers = players.filter(p => !alivePlayers.includes(p)) // get the dead players array - Array<Snowflake>
   const cannibals = alivePlayers.filter(p => db.get(`player_${p}`).role === "Cannibal") // get the alive Cannibals array - Array<Snowflake>
   
-  // loop through each serial killer
+  // loop through each cannibal
   for (let canni of cannibals) {
     
     let attacker = db.get(`player_${canni}`) // the attacker object - Object
