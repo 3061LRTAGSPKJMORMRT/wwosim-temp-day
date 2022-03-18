@@ -81,7 +81,7 @@ module.exports = client => {
       
         let guy = db.get(`player_${target}`)
 
-        // check if the sk's target is alive
+        // check if the canni's target is alive
         if (guy.status === "Alive") {
 
           // check for any protections
