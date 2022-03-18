@@ -10,7 +10,7 @@ const toughGuy = require("./protection/toughGuy.js") // tough guy protection
 const forger = require("./protection/forger.js") // forger protection
 const ghostLady = require("./protection/ghostLady.js") // ghost lady protection
 
-module.exports = async client => {
+module.exports = async (client, alivePlayersBefore) => {
   
   // define all the variables
   const guild = client.guilds.cache.get("890234659965898813") // get the guild object - Object
@@ -47,7 +47,7 @@ module.exports = async client => {
   let attacker = db.get(`player_${weakestWolf[0][0]}`) // get the attacker object
   
   // loop through all the alive players and get the votes from werewolves
-  alivePlayers.forEach(player => {
+  alivePlayersBefore.forEach(player => {
     
     // check if the player belongs to the werewolf team
     if (db.get(`player_${player}`).team === "Werewolf") {
