@@ -58,7 +58,7 @@ async function getProtections(client, guy, attacker) {
 
 }
 
-module.exports = client => {
+module.exports = async (client, alivePlayersBefore) => {
 
   // define all the variables
   const guild = client.guilds.cache.get("890234659965898813") // get the guild object - Object
@@ -67,7 +67,7 @@ module.exports = client => {
   const players = db.get(`players`) || [] // get the players array - Array<Snowflake>
   const alivePlayers = players.filter(p => db.get(`player_${p}`).status === "Alive") // get the alive players array - Array<Snowflake>
   const deadPlayers = players.filter(p => !alivePlayers.includes(p)) // get the dead players array - Array<Snowflake>
-  const cannibals = alivePlayers.filter(p => db.get(`player_${p}`).role === "Cannibal") // get the alive Cannibals array - Array<Snowflake>
+  const cannibals = alivePlayersBefore.filter(p => db.get(`player_${p}`).role === "Cannibal") // get the alive Cannibals array - Array<Snowflake>
   
   // loop through each cannibal
   for (let canni of cannibals) {
