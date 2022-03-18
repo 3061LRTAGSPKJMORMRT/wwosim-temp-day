@@ -58,7 +58,7 @@ async function getProtections(client, guy, attacker) {
 
 }
 
-module.exports = client => {
+module.exports = async client => {
 
   // define all the variables
   const guild = client.guilds.cache.get("890234659965898813") // get the guild object - Object
