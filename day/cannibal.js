@@ -74,7 +74,7 @@ module.exports = client => {
     
     let attacker = db.get(`player_${canni}`) // the attacker object - Object
     
-    // check if the sk has a target
+    // check if the canni has a target
     if (attacker.target) {
       
       for (let target of attacker.target) {
