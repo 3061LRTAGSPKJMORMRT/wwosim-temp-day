@@ -26,9 +26,9 @@ No, I will not call it Wolvesville
 🟢 Ghost Lady protection          <br>
 🟢 Bodyguard protection           <br>
 🟢 Serial Killer attacking        <br>
+🟢 Cannibal attacking             <br>
 🟡 Corruptor attacking            <br>
 🟡 Arsonist dousing               <br>
-🟡 Cannibal attacking             <br>
 🟠 Accomplice attacking           <br>
 🟠 Alchemist attacking            <br>
 🟠 Bandit attacking               <br>
