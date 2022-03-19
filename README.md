@@ -29,14 +29,14 @@ No, I will not call it Wolvesville
 🟢 Cannibal attacking             <br>
 🟡 Corruptor attacking            <br>
 🟡 Arsonist dousing               <br>
+🟡 Evil Detective attacking       <br>
+🟡 Hacker attacking               <br>
 🟠 Accomplice attacking           <br>
 🟠 Alchemist attacking            <br>
 🟠 Bandit attacking               <br>
 🟠 Bandit converting              <br>
 🟠 Bomber's bomb placement        <br>
 🟠 Dreamcatcher attacking         <br>
-🟠 Evil Detective attacking       <br>
-🟠 Hacker attacking               <br>
 🟠 Illusionist deluding           <br>
 🟠 Sect Leader converting         <br>
 🟠 Zombie biting                  <br>
