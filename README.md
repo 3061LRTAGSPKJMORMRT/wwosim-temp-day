@@ -27,9 +27,9 @@ No, I will not call it Wolvesville
 🟢 Bodyguard protection           <br>
 🟢 Serial Killer attacking        <br>
 🟢 Cannibal attacking             <br>
+🟢 Evil Detective attacking       <br>
 🟡 Corruptor attacking            <br>
 🟡 Arsonist dousing               <br>
-🟡 Evil Detective attacking       <br>
 🟡 Hacker attacking               <br>
 🟠 Accomplice attacking           <br>
 🟠 Alchemist attacking            <br>
