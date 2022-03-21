@@ -23,6 +23,7 @@ module.exports = {
     let illusionists = require("./day/wolves.js")
     let alchemists = require("./day/wolves.js")
     let sectleader = require("./day/wolves.js")
+    let evildetectives = require("./day/evildetectives.js")
     let grumpygrandmas = require("./day/wolves.js")
     
     // wolves function because berserk, urgh
@@ -92,6 +93,9 @@ module.exports = {
     if (db.get(`isBerserkActive`) !== true) {
       await theWolves()
     }
+    
+    // evil detective doing their job
+    await evildetectives(client, alivePlayers)
     
   }
 }
