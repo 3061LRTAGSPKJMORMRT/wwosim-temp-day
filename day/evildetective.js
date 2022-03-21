@@ -78,15 +78,51 @@ module.exports = async (client, alivePlayersBefore) => {
     if (attacker.target) {
       
       // check if both of the target don't belong to the same team
-      let [guy1, guy2] = attacker.target.map(t => db.get(`player_${t}`))
+      let [guy1, guy2] = attacker.target.map(t => db.get(`player_${t}`)) // get both of the victims
       if (guy1.team !== guy2.team || [guy1.team, guy2.team].includes("Solo")) {
         
-        [guy1, guy2]
-      
-      } else {
+        // loop through each victim
+        [guy1, guy2].forEach(async guy => {
         
-        let channel = guild.channels.cache.get(attacker.channel)
-        channel.send(``)
+            // check if the player is not the evil detective themself
+            if (guy.id !== det) {
+            
+                // check if the victim is alive
+                if (guy.status === "Alive") {
+                    
+                    let results = await getProtections(client, guy, attacker) // gets the protections and checks the result
+                    
+                    // check if there were no protections
+                    if (typeof results === "object") {
+                    
+                        // kill the player
+                        db.set(`player_${guy.id}.status`, "Dead") // changes the status of the victim
+                        await dayChat.send(`${getEmoji("evildetcheck", client)} The evil detective has killed **${players.indexOf(results.id)+1} ${results.username} (${getEmoji(results.role.toLowerCase().replace(/\s/g, "_"), client)} ${results.role})**!`)
+
+                        // get the member and set their role
+                        let member = await guild.members.fetch(results.id) // fetches the discord member
+                        let memberRoles = member.roles.cache.map(r => r.name === "Alive" ? "892046207428476989" : r.id) // gets all the roles of this member
+                        await member.roles.set(memberRoles) // sets the role for the member
+                    
+                    } else { // otherwise send a fail message to the detective
+                    
+                        let channel = guild.channels.cache.get(attacker.channel) // gets the channel object - Object
+                        await channel.send(`${getEmoji("guard", client)} Player **${players.indexOf(guy.id)+1} ${guy.username}** could not be killed!`) // sends an unsuccesful message
+                        await channel.send(`${guild.roles.cache.find(r => r.name === "Alive")}`) // pings the evil detective
+                    
+                    }
+                    
+                }
+                
+            }
+            
+        })
+      
+      } else { // if they are on the same team, send a message to the evil detective
+         
+        let channel = guild.channels.cache.get(attacker.channel) // gets the channel object - Object
+        await channel.send(`${getEmoji("evildetcheck", client)} Your targets are on the same team. They will not be killed tonight.`) // sends an unsuccesful message
+        await channel.send(`${guild.roles.cache.find(r => r.name === "Alive")}`) // pings the evil detective
         
       }
     }
