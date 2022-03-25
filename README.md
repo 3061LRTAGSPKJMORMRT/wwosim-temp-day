@@ -31,13 +31,13 @@ No, I will not call it Wolvesville
 🟢 Corruptor attacking            <br>
 🟢 Arsonist dousing               <br>
 🟢 Hacker attacking               <br>
+🟡 Alchemist attacking            <br>
+🟡 Illusionist deluding           <br>
 🟠 Accomplice attacking           <br>
-🟠 Alchemist attacking            <br>
 🟠 Bandit attacking               <br>
 🟠 Bandit converting              <br>
 🟠 Bomber's bomb placement        <br>
 🟠 Dreamcatcher attacking         <br>
-🟠 Illusionist deluding           <br>
 🟠 Sect Leader converting         <br>
 🟠 Zombie biting                  <br>
 🟠 Zombie converting              <br>
