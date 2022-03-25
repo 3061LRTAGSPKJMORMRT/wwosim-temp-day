@@ -26,18 +26,15 @@ module.exports = async (client, guy, attacker) => {
       // check and see if the Beast Hunter's trap is on the attacked player and the trap is active
       if (db.get(`player_${player}`).trap === guy.id && db.get(`player_${player}`).placed === true) {
         
+        // remove the trap from the player
+        db.delete(`player_${player}.trap`)
+        db.delete(`player_${player}.placed`)
+        
         // check if berserk is active and the attacker is from the werewolves' team
         if (isBerserkActive === true && attacker.team === "Werewolf") {
+          
           allProtected.push(player)
           db.set(`berserkProtected`, allProtected)
-          
-          // kill the weakest wolf
-          if (db.set(`player_${attacker.id}.status`).status === "Alive") { // check if the attacker is alive
-            const dayChat = guild.channels.cache.find(c => c.name === "day-chat") // gets the day chat channe
-            db.set(`player_${attacker.id}.status`, "Dead") // makes the attacker dead
-            await dayChat.send(`${getEmoji("trap", client)} The Beast Hunter's trap killed **${players.indexOf(attacker.id)+1} ${attacker.username} (${attacker.role} ${getEmoji(attacker.role?.toLowerCase()?.replace(/\s/g, "_"), client)})**!`)
-            await attackerMember.roles.set(allAttackerRoles)
-          }
           
         } else {
           
@@ -49,13 +46,6 @@ module.exports = async (client, guy, attacker) => {
           if (attacker.team !== "Werewolf") {
             await channel.send(`${getEmoji("trap", client)} Your trap was triggered last night but your target was too strong.`) // sends a message to the beast hunter
             await channel.send(`${guild.roles.cache.find(r => r.name === "Alive")}`) // pings alive in the channel
-          } else {
-            
-            // kill the weakest wolf
-            const dayChat = guild.channels.cache.find(c => c.name === "day-chat") // gets the day chat channel
-            db.set(`player_${attacker.id}.status`, "Dead") // makes the attacker dead
-            await dayChat.send(`${getEmoji("trap", client)} The Beast Hunter's trap killed **${players.indexOf(attacker.id)+1} ${attacker.username} (${attacker.role} ${getEmoji(attacker.role?.toLowerCase()?.replace(/\s/g, "_"), client)})**!`)
-            await attackerMember.roles.set(allAttackerRoles)
           }
           break; // break out of the loop
       }
