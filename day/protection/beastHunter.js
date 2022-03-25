@@ -5,13 +5,13 @@ module.exports = async (client, guy, attacker) => {
   
   if (typeof guy !== "object" || typeof attacker !== "object") return false // makes sure if "guy" and "attacker" is an object, otherwise exit early
   
-  // define all the variablesi
+  // define all the variables
   const guild = client.guilds.cache.get("890234659965898813") // get the guild object - Object
   const players = db.get(`players`) || [] // get the players array - Array<Snowflake>
   const alivePlayers = players.filter(p => db.get(`player_${p}`).status === "Alive") // get the alive players array - Array<Snowflake>
   const deadPlayers = players.filter(p => !alivePlayers.includes(p)) // get the dead players array - Array<Snowflake>
   const isBerserkActive = db.get(`isBerserkActive`) // get the value of isBerserkActive
-  const attackerMember = await guild.members.fetch() // get the discord member - Promise<GuildMember - Object>
+  const attackerMember = await guild.members.fetch(attacker.id) // get the discord member - Promise<GuildMember - Object>
   const allAttackerRoles = attackerMember.roles.cache.map(c => c.name === "Alive" ? "892046207428476989" : c.id) // get all the roles this member has - Array<Snowflake>
   let allProtected = db.get(`berserkProtected`) || [] // get the array of players who protected the berserk's target - Array<Snowflake>
   
