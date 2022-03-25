@@ -77,37 +77,42 @@ module.exports = async (client, alivePlayersBefore) => {
     // check if the hacker has a target
     if (attacker.target) {
       
-      let guy = db.get(`player_${attacker.target}`)
+      // loop through each target
+      attacker.target.forEach(async target => {
       
-      // check if the hacker's target is alive
-      if (guy.status === "Alive") {
+        let guy = db.get(`player_${target}`) // get the player object - Object
         
-        // check if the targets have been hacked before
-        if (attacker.hackedPlayers?.includes(guy.id)) {
+        // check if the hacker's target is alive
+        if (guy.status === "Alive") {
 
-          // check for any protections
-          let result = await getProtections(client, guy, attacker) // returns - Promise<Object|Boolean>
+            // check if the targets have been hacked before
+            if (attacker.hackedPlayers?.includes(guy.id)) {
 
-          // check if the result type is an object - indicating that there were no protections
-          if (typeof result === "object") {
+                // check for any protections
+                let result = await getProtections(client, guy, attacker) // returns - Promise<Object|Boolean>
 
-            // send a message to the day chat and make the player dead
-            db.set(`player_${result.id}.status`, "Dead") // changes the status of the player
-            let attackedPlayer = await guild.members.fetch(result.id) // fetch the discord member - Object
-            let attackedPlayerRoles = attackedPlayer.roles.cache.map(r => r.name === "Alive" ? "892046207428476989" : r.id) // get all the roles and replace the Alive role with Dead.
-            await dayChat.send(`${getEmoji("hack", client)} The Hacker hacked **${players.indexOf(result.id)+1} ${result.username} (${getEmoji(result.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${result.role})**!`)
-            await attackedPlayer.roles.set(attackedPlayerRoles) // removes the Alive and adds the Dead discord role
+                // check if the result type is an object - indicating that there were no protections
+                if (typeof result === "object") {
 
-          } else { // otherwise they were protected
+                    // send a message to the day chat and make the player dead
+                    db.set(`player_${result.id}.status`, "Dead") // changes the status of the player
+                    let attackedPlayer = await guild.members.fetch(result.id) // fetch the discord member - Object
+                    let attackedPlayerRoles = attackedPlayer.roles.cache.map(r => r.name === "Alive" ? "892046207428476989" : r.id) // get all the roles and replace the Alive role with Dead.
+                    await dayChat.send(`${getEmoji("hack", client)} The Hacker hacked **${players.indexOf(result.id)+1} ${result.username} (${getEmoji(result.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${result.role})**!`)
+                    await attackedPlayer.roles.set(attackedPlayerRoles) // removes the Alive and adds the Dead discord role
 
-            let channel = guild.channels.cache.get(attacker.channel) // get the channel object - Object
-            await channel.send(`${getEmoji("guard", client)} Player **${players.indexOf(guy.id)+1} ${guy.username}** could not be killed!`) // sends an error message
-            await channel.send(`${guild.roles.cache.find(r => r.name === "Alive")}`) // pings the player in the channel
+                } else { // otherwise they were protected
 
-          }
-          
+                    let channel = guild.channels.cache.get(attacker.channel) // get the channel object - Object
+                    await channel.send(`${getEmoji("guard", client)} Player **${players.indexOf(guy.id)+1} ${guy.username}** could not be killed!`) // sends an error message
+                    await channel.send(`${guild.roles.cache.find(r => r.name === "Alive")}`) // pings the player in the channel
+
+                }
+
+            }
         }
-      }
+      
+      })
     
     }
     
