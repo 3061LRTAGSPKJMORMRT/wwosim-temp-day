@@ -79,7 +79,7 @@ module.exports = async client => {
       
       let guy = db.get(`player_${attacker.target}`)
       
-      // check if the corr's target is alive
+      // check if the corr's target is alive 
       if (guy.status === "Alive") {
         
         // check for any protections
@@ -89,10 +89,27 @@ module.exports = async client => {
         let channel = guild.channels.cache.get(attacker.channel) // get the channel object - Object
         
         if (typeof result === "object") {
+            
+          let guyChannel = guild.channels.cache.get(result.channel) // get the channel of the corrupted player
           
-          // corrupt the player
-          db.set(`player_${guy.id}.corrupted`, true)
+          // check if player is corrupted to avoid duplicate messages
+          if (result.corrupted === true) {
+            
+              // corrupt and send a message to the corrupted player              
+              db.set(`player_${guy.id}.corrupted`, true) // corrupt the player
+              await guyChannel.send(`${getEmoji("corrupt", client)} You have been glitched! No one will hear you scream! You cannot vote or use your abilities today and will die at the end of the day.`) // sends the corrupted message
+              await guyChannel.send(`${guild.roles.cache.find(r => r.name === "Alive")}`) // pings the player
+              
+              // edit permissions for the day chat
+              await dayChat.permissionOverwrites.edit(result.id, {
+                  SEND_MESSAGES: false
+              })
+              
+          }
+          
+          // send a message to the corruptor            
           await channel.send(`${getEmoji("corrupt", client)} Player **${players.indexOf(result.id)+1} ${result.username}** has been corrupted.`) // sends a succesful message
+          
           
         } else { // otherwise they were protected
           
