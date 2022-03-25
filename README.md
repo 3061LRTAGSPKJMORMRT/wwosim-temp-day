@@ -33,9 +33,9 @@ No, I will not call it Wolvesville
 🟢 Hacker attacking               <br>
 🟢 Alchemist attacking            <br>
 🟢 Illusionist deluding           <br>
-🟠 Accomplice attacking           <br>
-🟠 Bandit attacking               <br>
-🟠 Bandit converting              <br>
+🟡 Accomplice attacking           <br>
+🟡 Bandit attacking               <br>
+🟡 Bandit converting              <br>
 🟠 Bomber's bomb placement        <br>
 🟠 Dreamcatcher attacking         <br>
 🟠 Sect Leader converting         <br>
