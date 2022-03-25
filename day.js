@@ -11,19 +11,21 @@ module.exports = {
     const deadPlayers = players.filter(player => !alivePlayers.includes(player))
     
     // get all the actions
-    let wolves = require("./day/wolves.js")
+    let { wolves } = require("./day/wolves.js")
+    let { beastHunterKilling } = require("./day/wolves.js")
     let kittenwolf = require("./day/kittenWolf.js")
     let serialkillers = require("./day/serialkillers.js")
     let bandits = require("./day/wolves.js")
     let cannibals = require("./day/cannibals.js")
     let zombies = require("./day/wolves.js")
-    let corruptors = require("./day/wolves.js")
-    let arsonists = require("./day/wolves.js")
+    let corruptors = require("./day/corruptors.js")
+    let arsonists = require("./day/arsonists.js")
     let bombers = require("./day/wolves.js")
     let illusionists = require("./day/wolves.js")
     let alchemists = require("./day/wolves.js")
     let sectleader = require("./day/wolves.js")
     let evildetectives = require("./day/evildetectives.js")
+    let hackers = require("./day/hackers.js")
     let grumpygrandmas = require("./day/wolves.js")
     
     // wolves function because berserk, urgh
@@ -86,6 +88,7 @@ module.exports = {
     await cannibals(client, alivePlayers)
     
     // hacker doing their job
+    await hackers(client, alivePlayers)
     
     // dreamcatcher doing their job
     
@@ -96,6 +99,24 @@ module.exports = {
     
     // evil detective doing their job
     await evildetectives(client, alivePlayers)
+    
+    // bandit failed conversion killing
+    
+    // bh killing a wolf
+    
+    // medium reviving
+    
+    // grumpy grandma muting
+    
+    // arsonist dousing
+    await arsonists(client, alivePlayers)
+    
+    // corruptor corrupting
+    await corruptors(client, alivePlayers)
+    
+    // alchemist giving potion
+    
+    // illusionist disguising
     
   }
 }
