@@ -31,7 +31,7 @@ No, I will not call it Wolvesville
 🟢 Corruptor attacking            <br>
 🟢 Arsonist dousing               <br>
 🟢 Hacker attacking               <br>
-🟡 Alchemist attacking            <br>
+🟢 Alchemist attacking            <br>
 🟡 Illusionist deluding           <br>
 🟠 Accomplice attacking           <br>
 🟠 Bandit attacking               <br>
