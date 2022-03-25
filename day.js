@@ -11,8 +11,7 @@ module.exports = {
     const deadPlayers = players.filter(player => !alivePlayers.includes(player))
     
     // get all the actions
-    let { wolves } = require("./day/wolves.js")
-    let { beastHunterKilling } = require("./day/wolves.js")
+    let { wolves, beastHunterKilling } = require("./day/wolves.js")
     let kittenwolf = require("./day/kittenWolf.js")
     let serialkillers = require("./day/serialkillers.js")
     let bandits = require("./day/wolves.js")
@@ -65,7 +64,7 @@ module.exports = {
         let wolfy = db.get(`wolvesVote`) || "0"
         if (wolfy !== "0") wolfy = db.get(`player_${`wolvesVote`}`)
         let errMesg = "attacked!"
-        if (db.get(`kittenWolfConvert`) === true) errMesg = "could not be converted into a Werewolf! They were either protected, is a Headhunter's target, or they aren't from the village."
+        if (db.get(`kittenWolfConvert`) === true) errMesg = "converted into a Werewolf! They were either protected, is a Headhunter's target, or they aren't from the village."
         await werewolvesChat.send(`${getEmoji("guard", client)} Player **${players.indexOf(wolfy.id)+1} ${wolfy.username}** could not be ${errMesg}`)
       }
     }
@@ -103,6 +102,7 @@ module.exports = {
     // bandit failed conversion killing
     
     // bh killing a wolf
+    await beastHunterKilling(client)
     
     // medium reviving
     
