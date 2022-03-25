@@ -20,7 +20,7 @@ module.exports = {
     let corruptors = require("./day/corruptors.js")
     let arsonists = require("./day/arsonists.js")
     let bombers = require("./day/wolves.js")
-    let illusionists = require("./day/wolves.js")
+    let illusionists = require("./day/illusionists.js")
     let alchemists = require("./day/alchemists.js")
     let sectleader = require("./day/wolves.js")
     let evildetectives = require("./day/evildetectives.js")
@@ -118,6 +118,7 @@ module.exports = {
     await alchemists(client)
     
     // illusionist disguising
+    await illusionists(client)
     
   }
 }
