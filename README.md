@@ -32,7 +32,7 @@ No, I will not call it Wolvesville
 🟢 Arsonist dousing               <br>
 🟢 Hacker attacking               <br>
 🟢 Alchemist attacking            <br>
-🟡 Illusionist deluding           <br>
+🟢 Illusionist deluding           <br>
 🟠 Accomplice attacking           <br>
 🟠 Bandit attacking               <br>
 🟠 Bandit converting              <br>
