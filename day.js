@@ -21,7 +21,7 @@ module.exports = {
     let arsonists = require("./day/arsonists.js")
     let bombers = require("./day/wolves.js")
     let illusionists = require("./day/wolves.js")
-    let alchemists = require("./day/wolves.js")
+    let alchemists = require("./day/alchemists.js")
     let sectleader = require("./day/wolves.js")
     let evildetectives = require("./day/evildetectives.js")
     let hackers = require("./day/hackers.js")
@@ -109,12 +109,13 @@ module.exports = {
     // grumpy grandma muting
     
     // arsonist dousing
-    await arsonists(client, alivePlayers)
+    await arsonists(client)
     
     // corruptor corrupting
-    await corruptors(client, alivePlayers)
+    await corruptors(client)
     
     // alchemist giving potion
+    await alchemists(client)
     
     // illusionist disguising
     
