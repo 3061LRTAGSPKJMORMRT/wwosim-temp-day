@@ -10,7 +10,10 @@ const toughGuy = require("./protection/toughGuy.js") // tough guy protection
 const forger = require("./protection/forger.js") // forger protection
 const ghostLady = require("./protection/ghostLady.js") // ghost lady protection
 
-module.exports = async (client, alivePlayersBefore) => {
+let attackedByBeastHunter = false
+let confirmedWeakestWolf = false
+
+module.exports.wolves = async (client, alivePlayersBefore) => {
   
   // define all the variables
   const guild = client.guilds.cache.get("890234659965898813") // get the guild object - Object
@@ -45,6 +48,7 @@ module.exports = async (client, alivePlayersBefore) => {
   if (!weakestWolf) return toKill // exit early if no wolf was found
   
   let attacker = db.get(`player_${weakestWolf[0][0]}`) // get the attacker object
+  confirmedWeakestWolf = attacker
   
   // loop through all the alive players and get the votes from werewolves
   alivePlayersBefore.forEach(player => {
@@ -138,7 +142,7 @@ module.exports = async (client, alivePlayersBefore) => {
     
     // check if the player they are attacking is healed by the beast hunter
     getResult = await beastHunter(client, guy, attacker) // checks if a beast hunter has a trap on them
-    if (getResult === true) return false // exits early if a beast hunter DOES have a trap on them
+    if (getResult === true) { attackedByBeastHunter = true ; return false } // exits early if a beast hunter DOES have a trap on them
     
     // check if the player they are attacking is jailed
     getResult = await jailer(client, guy, attacker) // checks if they are jailed
@@ -184,3 +188,31 @@ module.exports = async (client, alivePlayersBefore) => {
   
   
 }
+
+module.exports.beastHunterKilling = async (client) => {
+  
+  // check if the wolves were attacked by beast hunter
+  if (attackedByBeastHunter === true && confirmedWeakestWolf !== false) {
+    
+    // kill the weakest wolf
+    const guild = client.guilds.cache.get("890234659965898813") // get the guild object - Object
+    const dayChat = guild.channels.cache.find(c => c.name === "day-chat") // gets the day chat channel
+    const players = db.get(`players`) || [] // get the players array - Array<Snowflake>
+    const attackerMember = await guild.members.fetch(confirmedWeakestWolf.id) // get the discord member
+    const allAttackerRoles = attackerMember.roles.cache.map(r => r.name === "Alive" ? "892046207428476989" : r.id) // get all the roles from the member
+    
+    // check if the attacker is alive
+    if (confirmedWeakestWolf.status === "Alive") {
+      
+        // kill the wolf
+        db.set(`player_${confirmedWeakestWolf.id}.status`, "Dead") // makes the attacker dead
+        await dayChat.send(`${getEmoji("trap", client)} The Beast Hunter's trap killed **${players.indexOf(confirmedWeakestWolf.id)+1} ${confirmedWeakestWolf.username} (${getEmoji(confirmedWeakestWolf.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${confirmedWeakestWolf.role})**!`)
+        await attackerMember.roles.set(allAttackerRoles) // set the role
+    }
+  
+  }
+  
+  
+}
+
+
