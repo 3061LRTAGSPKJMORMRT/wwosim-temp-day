@@ -37,7 +37,7 @@ No, I will not call it Wolvesville
 🟢 Bandit attacking               <br>
 🟢 Bandit converting              <br>
 🟠 Dreamcatcher attacking         <br>
-🟠 Sect Leader converting         <br>
+🟡 Sect Leader converting         <br>
 🟠 Zombie biting                  <br>
 🟠 Zombie converting              <br>
 🔴 Grumpy Grandma muting          <br>
