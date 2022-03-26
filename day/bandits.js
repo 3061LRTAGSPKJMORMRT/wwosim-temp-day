@@ -130,7 +130,7 @@ module.exports = async (client) => {
             })
 
             // give permissions to the converted player
-            await newChannel.permissionOverwrites.create(result, {
+            await newChannel.permissionOverwrites.create(result.id, {
                 SEND_MESSAGES: true,
                 VIEW_CHANNEL: true,
                 READ_MESSAGE_HISTORY: true
