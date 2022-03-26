@@ -67,12 +67,21 @@ module.exports = async (client, alivePlayersBefore) => {
   const players = db.get(`players`) || [] // get the players array - Array<Snowflake>
   const alivePlayers = players.filter(p => db.get(`player_${p}`).status === "Alive") // get the alive players array - Array<Snowflake>
   const deadPlayers = players.filter(p => !alivePlayers.includes(p)) // get the dead players array - Array<Snowflake>
+  const bandits = alivePlayersBefore.filter(p => db.get(`player_${p}`).role === "Bandit") // get the alive Bandits array - Array<Snowflake>
   const accomplices = alivePlayersBefore.filter(p => db.get(`player_${p}`).role === "Accomplice") // get the alive Accomplices array - Array<Snowflake>
   
-  // loop through each accomplice
-  for (let acc of accomplices) {
+  // loop through each bandit
+  for (let bandit of bandits) {
     
-    let attacker = db.get(`player_${acc}`) // the attacker object - Object
+    let theAttacker = db.get(`player_${bandit}`) // the attacker (bandit) object - Object
+    let attacker = theAttacker.accomplices.find(d => accomplices.includes(d)) // the attacker (accomplice) object - Object
+    
+    // check if the accomplice is alive. If not, turn the kill into a conversion
+    if (!attacker) {
+        attacker = { target: false } // set the target to false
+        db.set(`player_${bandit}.accomplice`, theAttacker.target) // set the kill into a conversion
+    }
+    
     
     // check if the accomplice selected anyone
     if (!attacker.target) {
