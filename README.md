@@ -46,13 +46,12 @@ No, I will not call it Wolvesville
 🔴 Red lady visiting results      <br>
 🔴 Medium reviving                <br>
 🔴 Grave robber taking their role <br>
-🔴 Evil Detective attacking       <br>
 🔴 Lovers getting coupled         <br>
 🔴 Forger giving sheild           <br>
 🔴 Forger giving sword            <br>
 🔴 Prognosticator making peace    <br>
 🔴 Prognosticator terrorizing     <br>
-🔴 Split wolf binding with others <br>
+~~🔴 Split wolf binding with others <br>~~
 🔴 Resetting votes, attacks etc.  <br>
 
 
