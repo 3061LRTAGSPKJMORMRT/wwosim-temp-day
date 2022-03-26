@@ -37,9 +37,9 @@ No, I will not call it Wolvesville
 🟢 Bandit attacking               <br>
 🟢 Bandit converting              <br>
 🟢 Sect Leader converting         <br>
-🟠 Dreamcatcher attacking         <br>
-🟠 Zombie biting                  <br>
-🟠 Zombie converting              <br>
+🟢 Dreamcatcher attacking         <br>
+🟡 Zombie biting                  <br>
+🟡 Zombie converting              <br>
 🔴 Grumpy Grandma muting          <br>
 🔴 Jailer releasing target        <br>
 🔴 Nightmared players wake up     <br>
