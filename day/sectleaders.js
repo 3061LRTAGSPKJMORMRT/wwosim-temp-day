@@ -41,10 +41,6 @@ async function getProtections(client, guy, attacker) {
   // check if getResult isn't an object
     if (typeof getResult !== "object") {
 
-    // check if the player they are attacking is healed by the tough guy
-    getResult = await toughGuy(client, guy, attacker) // checks if a tough guy is protecting them
-    if (getResult === true) return false // exits early if a tough guy IS protecting them
-
     // check if the player they are attacking is a red lady that got away visiting someone else
     getResult = await redLady(client, guy, attacker) // checks if the red lady is not home
     if (getResult === true) return false // exits early if the red lady IS not home
