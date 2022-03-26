@@ -33,15 +33,14 @@ No, I will not call it Wolvesville
 🟢 Hacker attacking               <br>
 🟢 Alchemist attacking            <br>
 🟢 Illusionist deluding           <br>
-🟡 Accomplice attacking           <br>
-🟡 Bandit attacking               <br>
-🟡 Bandit converting              <br>
+🟢 Accomplice attacking           <br>
+🟢 Bandit attacking               <br>
+🟢 Bandit converting              <br>
 🟠 Bomber's bomb placement        <br>
 🟠 Dreamcatcher attacking         <br>
 🟠 Sect Leader converting         <br>
 🟠 Zombie biting                  <br>
 🟠 Zombie converting              <br>
-🟠 Zombie dying                   <br>
 🔴 Grumpy Grandma muting          <br>
 🔴 Jailer releasing target        <br>
 🔴 Nightmared players wake up     <br>
