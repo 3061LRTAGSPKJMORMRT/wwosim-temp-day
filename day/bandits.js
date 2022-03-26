@@ -58,7 +58,7 @@ async function getProtections(client, guy, attacker) {
 
 }
 
-module.exports = async (client, alivePlayersBefore) => {
+module.exports = async (client) => {
 
   // define all the variables
   const guild = client.guilds.cache.get("890234659965898813") // get the guild object - Object
@@ -69,7 +69,7 @@ module.exports = async (client, alivePlayersBefore) => {
   const players = db.get(`players`) || [] // get the players array - Array<Snowflake>
   const alivePlayers = players.filter(p => db.get(`player_${p}`).status === "Alive") // get the alive players array - Array<Snowflake>
   const deadPlayers = players.filter(p => !alivePlayers.includes(p)) // get the dead players array - Array<Snowflake>
-  const bandits = alivePlayersBefore.filter(p => db.get(`player_${p}`).role === "Bandit") // get the alive Bandits array - Array<Snowflake>
+  const bandits = alivePlayers.filter(p => db.get(`player_${p}`).role === "Bandit") // get the alive Bandits array - Array<Snowflake>
   const headhunterTargets = alivePlayers.filter(d => db.get(`player_${d}`).role === "Headhunter").map(d => db.get(`player_${d}`).target)
   const phase = db.get(`gamePhase`)
   
@@ -179,6 +179,10 @@ module.exports = async (client, alivePlayersBefore) => {
             db.set(`player_${result.id}.channel`, newChannel.id) // changes the player's channel in the database
             db.set(`player_${result.id}.bandit`, attacker.id) // set's the bandit who converted this player
             db.set(`player_${result.id}.convertedAt`, phase) // set when this player was converted
+              
+            let allAccomplices = db.get(`player_${attacker.id}.accomplices`) || [] // gets all the accomplices
+            allAccomplices.push(result.id) // push the player into the array
+            db.set(`player_${attacker.id}.accomplices`, allAccomplices) // set the database
 
             // send a message to the bandits chat
             await banditChannel.send(`${getEmoji("kidnap", client)} Player **${players.indexOf(result.id)+1} ${result.username} (${getEmoji(result.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${result.role})** has been converted into an Accomplice! Together, you can kill players.`) // sends a message 
