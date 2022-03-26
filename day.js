@@ -17,7 +17,7 @@ module.exports = {
     let accomplices = require("./day/accomplices.js")
     let bandits = require("./day/bandits.js")
     let cannibals = require("./day/cannibals.js")
-    let zombies = require("./day/wolves.js")
+    let zombies = require("./day/zombies.js")
     let corruptors = require("./day/corruptors.js")
     let arsonists = require("./day/arsonists.js")
     let bombers = require("./day/wolves.js")
@@ -115,9 +115,8 @@ module.exports = {
     
     // grumpy grandma muting
     
-    // zombie converting
-    
-    // zombie biting
+    // zombies converting and biting
+    await zombies(client, alivePlayers)
     
     // sect leader converting
     await sectleaders(client)
