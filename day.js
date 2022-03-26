@@ -22,6 +22,7 @@ module.exports = {
     let arsonists = require("./day/arsonists.js")
     let bombers = require("./day/wolves.js")
     let illusionists = require("./day/illusionists.js")
+    let dreamcatchers = require("./day/dreamcatchers.js")
     let alchemists = require("./day/alchemists.js")
     let sectleaders = require("./day/sectleaders.js")
     let evildetectives = require("./day/evildetectives.js")
@@ -94,6 +95,7 @@ module.exports = {
     await hackers(client, alivePlayers)
     
     // dreamcatcher doing their job
+    await dreamcatchers(client, alivePlayers)
     
     // wolves doing their job last if berserk is not active
     if (db.get(`isBerserkActive`) !== true) {
