@@ -36,7 +36,7 @@ No, I will not call it Wolvesville
 🟢 Accomplice attacking           <br>
 🟢 Bandit attacking               <br>
 🟢 Bandit converting              <br>
-🟠 Bomber's bomb placement        <br>
+🟡 Bomber's bomb placement        <br>
 🟠 Dreamcatcher attacking         <br>
 🟠 Sect Leader converting         <br>
 🟠 Zombie biting                  <br>
