@@ -79,9 +79,9 @@ module.exports = async (client) => {
     let attacker = db.get(`player_${bandit}`) // the attacker object - Object
     
     // check if the bandit selected someone
-    if (attacker.target) {
+    if (attacker.accomplice) {
       
-      let guy = db.get(`player_${attacker.target}`)
+      let guy = db.get(`player_${attacker.accomplice}`)
       
       // check if the bandit's target is alive
       if (guy.status === "Alive") {
