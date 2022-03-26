@@ -70,7 +70,7 @@ module.exports = async (client, alivePlayersBefore) => {
   const alivePlayers = players.filter(p => db.get(`player_${p}`).status === "Alive") // get the alive players array - Array<Snowflake>
   const deadPlayers = players.filter(p => !alivePlayers.includes(p)) // get the dead players array - Array<Snowflake>
   const bandits = alivePlayersBefore.filter(p => db.get(`player_${p}`).role === "Bandit") // get the alive Bandits array - Array<Snowflake>
-  const headhunterTargets = alivePlayers.filter(d => d.role === "Headhunter").map(d => d.target)
+  const headhunterTargets = alivePlayers.filter(d => db.get(`player_${d}`).role === "Headhunter").map(d => db.get(`player_${d}`).target)
   const phase = db.get(`gamePhase`)
   
   // loop through each accomplice
