@@ -62,6 +62,8 @@ module.exports = async (client, alivePlayersBefore) => {
 
   // define all the variables
   const guild = client.guilds.cache.get("890234659965898813") // get the guild object - Object
+  const narrator = guild.roles.cache.find((r) => r.name === "Narrator")
+  const mininarr = guild.roles.cache.find((r) => r.name === "Narrator Trainee")
   const dayChat = guild.channels.cache.find(c => c.name === "day-chat") // get the day channel - Object
   const werewolvesChat = guild.channels.cache.find(c => c.name === "werewolves-chat") // get the werewolves channel - Object
   const players = db.get(`players`) || [] // get the players array - Array<Snowflake>
@@ -69,6 +71,7 @@ module.exports = async (client, alivePlayersBefore) => {
   const deadPlayers = players.filter(p => !alivePlayers.includes(p)) // get the dead players array - Array<Snowflake>
   const bandits = alivePlayersBefore.filter(p => db.get(`player_${p}`).role === "Bandit") // get the alive Bandits array - Array<Snowflake>
   const headhunterTargets = alivePlayers.filter(d => d.role === "Headhunter").map(d => d.target)
+  const phase = db.get(`gamePhase`)
   
   // loop through each accomplice
   for (let bandit of bandits) {
@@ -83,8 +86,8 @@ module.exports = async (client, alivePlayersBefore) => {
       // check if the bandit's target is alive
       if (guy.status === "Alive") {
         
-        // check if they are not village aligned
-        if ((guy.team !== "Village" && !["Fool", "Headhunter"].includes(guy.role)) || typeof guy.sected === "object" || guy.bitten === true || headhunterTargets.includes(guy.id)) {
+        // check if they are not village aligned 
+        if ((guy.team !== "Village" && !["Fool", "Headhunter"].includes(guy.role) && (guy.role === "Accomplice" && guy.convertedAt !== phase )) || typeof guy.sected === "object" || guy.bitten === true || headhunterTargets.includes(guy.id)) {
         
           // check for any protections
           let result = await getProtections(client, guy, attacker) // returns - Promise<Object|Boolean>
@@ -96,13 +99,15 @@ module.exports = async (client, alivePlayersBefore) => {
             db.set(`player_${result.id}.status`, "Dead")          
             let attackedPlayer = await guild.members.fetch(result.id) // fetch the discord member - Object
             let attackedPlayerRoles = attackedPlayer.roles.cache.map(r => r.name === "Alive" ? "892046207428476989" : r.id) // get all the roles and replace the Alive role with Dead.
-            await dayChat.send(`${getEmoji("serial_killer_knife", client)} The Serial Killer stabbed **${players.indexOf(result.id)+1} ${result.username} (${getEmoji(result.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${result.role})**!`)
+            let channel = guild.channels.cache.get(attacker.channel) // get the channel object - Object
+            await channel.send(`${getEmoji("kidnap", client)} Player **${players.indexOf(result.id)+1} ${result.username}** didn't want to be your accomplice, so you killed them instead.`)
+            await dayChat.send(`${getEmoji("thieve", client)} Bandits killed **${players.indexOf(result.id)+1} ${result.username} (${getEmoji(result.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${result.role})**!`)
             await attackedPlayer.roles.set(attackedPlayerRoles) // removes the Alive and adds the Dead discord role
 
           } else { // otherwise they were protected
 
             let channel = guild.channels.cache.get(attacker.channel) // get the channel object - Object
-            await channel.send(`${getEmoji("guard", client)} Player **${players.indexOf(guy.id)+1} ${guy.username}** could not be killed!`) // sends an error message
+            await channel.send(`${getEmoji("guard", client)} Player **${players.indexOf(guy.id)+1} ${guy.username}** could not be converted!`) // sends an error message
             await channel.send(`${guild.roles.cache.find(r => r.name === "Alive")}`) // pings the player in the channel
 
           }
@@ -113,10 +118,71 @@ module.exports = async (client, alivePlayersBefore) => {
           let result = await getProtections(client, guy, attacker) // returns - Promise<Object|Boolean>
           
           // check if the result type is an object - indicating that there were no protections
-          if (typeof result === "object") {
+          if (typeof result === "object" && guy.role !== "Accomplice") {
             
             // convert the player then
-            // do some stuff here 
+            let channel = guild.channels.cache.get(result.channel)
+            let banditChannel = guild.channels.cache.get(attacker.banditChannel)
+             
+            const newChannel = await guild.channels.create("priv-accomplice", { 
+                parent: "892046231516368906", // the category id
+                position: channel.position - 1 // the same position where the channel is
+            })
+
+            // give permissions to the converted player
+            await newChannel.permissionOverwrites.create(result, {
+                SEND_MESSAGES: true,
+                VIEW_CHANNEL: true,
+                READ_MESSAGE_HISTORY: true
+            })
+
+            // disable permissions for the everyone role
+            await newChannel.permissionOverwrites.create(guild.id, {
+                VIEW_CHANNEL: false,
+            })
+
+            // give permissions to narrator
+            await newChannel.permissionOverwrites.create(narrator.id, {
+                SEND_MESSAGES: true,
+                VIEW_CHANNEL: true,
+                READ_MESSAGE_HISTORY: true,
+                MANAGE_CHANNELS: true,
+                MENTION_EVERYONE: true,
+                ATTACH_FILES: true,
+            })
+
+            // give permissions to narrator trainee
+            await newChannel.permissionOverwrites.create(mininarr.id, {
+                SEND_MESSAGES: true,
+                VIEW_CHANNEL: true,
+                READ_MESSAGE_HISTORY: true,
+                MANAGE_CHANNELS: true,
+                MENTION_EVERYONE: true,
+                ATTACH_FILES: true,
+            })
+
+            await banditChannel.permissionOverwrites.create(guy.id, {
+                SEND_MESSAGES: true,
+                VIEW_CHANNEL: true,
+                READ_MESSAGE_HISTORY: true
+            })
+
+            await channel.delete() // delete the original channel
+
+            await newChannel.send(getRole("accomplice").description)
+            .then(c => { await c.pin() ; await c.channel.bulkDelete(1) }) // sends the description, pins the message and deletes the last message
+            await newChannel.send(`<@${result.id}>`)
+            .then(c => setTimeout(() => c.delete(), 3000)) // pings the player and deletes the ping after 3 seconds
+
+            db.set(`player_${result.id}.role`, "Accomplice") // changes the player's role in the database
+            db.set(`player_${result.id}.team`, "Bandits") // changes the player's team in the database
+            db.set(`player_${result.id}.channel`, newChannel.id) // changes the player's channel in the database
+            db.set(`player_${result.id}.bandit`, attacker.id) // set's the bandit who converted this player
+            db.set(`player_${result.id}.convertedAt`, phase) // set when this player was converted
+
+            // send a message to the bandits chat
+            await banditChannel.send(`${getEmoji("kidnap", client)} Player **${players.indexOf(result.id)+1} ${result.username} (${getEmoji(result.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${result.role})** has been converted into an Accomplice! Together, you can kill players.`) // sends a message 
+  
           
           } else { // otherwise they were protected
             
