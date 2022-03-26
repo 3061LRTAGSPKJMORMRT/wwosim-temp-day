@@ -14,7 +14,8 @@ module.exports = {
     let { wolves, beastHunterKilling } = require("./day/wolves.js")
     let kittenwolf = require("./day/kittenWolf.js")
     let serialkillers = require("./day/serialkillers.js")
-    let bandits = require("./day/wolves.js")
+    let accomplices = require("./day/accomplices.js")
+    let bandits = require("./day/bandits.js")
     let cannibals = require("./day/cannibals.js")
     let zombies = require("./day/wolves.js")
     let corruptors = require("./day/corruptors.js")
@@ -22,7 +23,7 @@ module.exports = {
     let bombers = require("./day/wolves.js")
     let illusionists = require("./day/illusionists.js")
     let alchemists = require("./day/alchemists.js")
-    let sectleader = require("./day/wolves.js")
+    let sectleaders = require("./day/sectleaders.js")
     let evildetectives = require("./day/evildetectives.js")
     let hackers = require("./day/hackers.js")
     let grumpygrandmas = require("./day/wolves.js")
@@ -80,11 +81,14 @@ module.exports = {
       await theWolves()
     }
     
+    // cannibal doing their job
+    await cannibals(client, alivePlayers)
+    
     // serial killer doing their job
     await serialkillers(client, alivePlayers)
     
-    // cannibal doing their job
-    await cannibals(client, alivePlayers)
+    // bandits doing their job
+    await accomplices(client, alivePlayers)
     
     // hacker doing their job
     await hackers(client, alivePlayers)
@@ -99,7 +103,8 @@ module.exports = {
     // evil detective doing their job
     await evildetectives(client, alivePlayers)
     
-    // bandit failed conversion killing
+    // bandit conversion
+    await bandits(client)
     
     // bh killing a wolf
     await beastHunterKilling(client)
@@ -107,6 +112,13 @@ module.exports = {
     // medium reviving
     
     // grumpy grandma muting
+    
+    // zombie converting
+    
+    // zombie biting
+    
+    // sect leader converting
+    await sectleaders(client)
     
     // arsonist dousing
     await arsonists(client)
