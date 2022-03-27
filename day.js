@@ -27,7 +27,8 @@ module.exports = {
     let sectleaders = require("./day/sectleaders.js")
     let evildetectives = require("./day/evildetectives.js")
     let hackers = require("./day/hackers.js")
-    let grumpygrandmas = require("./day/wolves.js")
+    let grumpygrandmas = require("./others/grumpygrandmas.js")
+    let mediums = require("./others/mediums.js")
     
     // wolves function because berserk, urgh
     function theWolves() {
@@ -112,8 +113,10 @@ module.exports = {
     await beastHunterKilling(client)
     
     // medium reviving
+    await mediums(client)
     
     // grumpy grandma muting
+    await grumpygrandmas(client)
     
     // zombies converting and biting
     await zombies(client, alivePlayers)
@@ -135,5 +138,3 @@ module.exports = {
     
   }
 }
-
-
