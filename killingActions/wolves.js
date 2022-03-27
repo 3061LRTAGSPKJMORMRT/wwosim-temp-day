@@ -13,6 +13,54 @@ const ghostLady = require("./protection/ghostLady.js") // ghost lady protection
 let attackedByBeastHunter = false
 let confirmedWeakestWolf = false
 
+async function getProtections(client, guy, attacker) {
+    
+  let getResult;
+  
+  // check if the player they are attacking is healed by the beast hunter
+  getResult = await beastHunter(client, guy, attacker) // checks if a beast hunter has a trap on them
+  if (getResult === true) return false // exits early if a beast hunter DOES have a trap on them
+
+  // check if the player they are attacking is jailed
+  getResult = await jailer(client, guy, attacker) // checks if they are jailed
+  if (getResult === true) return false // exits early if they are jailed
+
+  // check if the player they are attacking is healed by the ghost lady
+  getResult = await ghostLady(client, guy, attacker) // checks if a ghost lady is protecting them
+  if (getResult === true) return false // exits early if a ghost lady IS protecting them
+
+  // check if the player they are attacking is healed by the doctor
+  getResult = await doctor(client, guy, attacker) // checks if a doctor is protecting them
+  if (getResult === true) return false // exits early if a doctor IS protecting them
+
+  // check if the player they are attacking is healed by the witch
+  getResult = await witch(client, guy, attacker) // checks if a witch is protecting them
+  if (getResult === true) return false // exits early if a witch IS protecting them
+
+  // check if the player they are attacking is healed by the bodyguard
+  getResult = await bodyguard(client, guy, attacker) // checks if a bodyguard is protecting them
+  if (getResult === true) return false // exits early if a bodyguard IS protecting them
+
+  // check if getResult isn't an object
+    if (typeof getResult !== "object") {
+
+    // check if the player they are attacking is healed by the tough guy
+    getResult = await toughGuy(client, guy, attacker) // checks if a tough guy is protecting them
+    if (getResult === true) return false // exits early if a tough guy IS protecting them
+
+    // check if the player they are attacking is a red lady that got away visiting someone else
+    getResult = await redLady(client, guy, attacker) // checks if the red lady is not home
+    if (getResult === true) return false // exits early if the red lady IS not home
+
+    // check if the player they are protecting has the forger's sheild
+    getResult = await forger(client, guy) // checks if the player has the forger's sheild
+    if (getResult === true) return false // exits early if the player DOES have the forger's sheild
+  }
+
+  return typeof getResult === "object" ? getResult : guy // looks like there were no protections 
+
+}
+
 module.exports.wolves = async (client, alivePlayersBefore) => {
   
   // define all the variables
@@ -103,89 +151,96 @@ module.exports.wolves = async (client, alivePlayersBefore) => {
     }
     
     let guy = db.get(`player_${players[Number(toKill)-1]}`) // get the user for the voted player
-    let role = guy.role
-    
     let kwwDied = db.get(`kittenWolfConvert`)
     
-    if (guy.status === "Dead") return "0"
+    if (guy.status === "Alive") {
     
-    // protection part
-    
-    // check if the player is a solo killer
-    if (["Bandit", "Corruptor", "Cannibal", "Illusionist", "Serial Killer", "Arsonist", "Bomber", "Alchemist", "Hacker", "Dreamcatcher"].includes(role)) return false // exit early if they are a solo killer
-    
-    let getResult;    
-    
-    // check if kwwDied and check if they do not belong to the village or are the headhunter's target
-    if (kwwDied === true) {
-      
-      db.delete(`isBerserkActive`) // disable berserk
-      
-      let headhunterTargets = [] // an array of headhunter targets to be put in - Array<Snowflake>
-      
-      // get all the headhunter targets
-      alivePlayers.forEach(player => {
+      // protection part
+
+      // check if kwwDied and check if they do not belong to the village or are the headhunter's target
+      if (kwwDied === true || guy.role === "Cursed" || guy.role === "Werewolf Fan") {
         
-        // check if their role is Headhunter
-        if (db.get(`player_${player}`).role === "Headhunter") { 
-          headhunterTargets.push(db.get(`player_${player}`).headhunterTarget) // adds the headhunter's target to the list
+        // conversion 
+
+        if (kwwDied === true) db.delete(`isBerserkActive`) // disable berserk
+
+        let headhunterTargets = [] // an array of headhunter targets to be put in - Array<Snowflake>
+
+        // get all the headhunter targets
+        alivePlayers.forEach(player => {
+
+          // check if their role is Headhunter
+          if (db.get(`player_${player}`).role === "Headhunter") { 
+            headhunterTargets.push(db.get(`player_${player}`).headhunterTarget) // adds the headhunter's target to the list
+          }
+        })
+
+        // check if they are a headhunter's target or do not belong to the village team
+        if (guy.team !== "Village" || headhunterTargets.includes(guy.id) || typeof guy.sected === "string" || guy.bitten === true || ["Bandit", "Corruptor", "Cannibal", "Illusionist", "Serial Killer", "Arsonist", "Bomber", "Alchemist", "Hacker", "Dreamcatcher"].includes(guy.role)) // check if the player is not from the village
+        
+           // send a fail message since they do not belong to the village or are the headhunter's target
+           await werewolvesChat.send(`${getEmoji("guard", client)} Player **${players.indexOf(guy.id)+1} ${guy.username}** couldn't be converted into a Werewolf! They were either protected, aren't from the Village, or they are a Headhunter's target.`)  // send an unsuccesful message
+           await werewolvesChat.send(`${guild.roles.cache.find(r => r.name === "Alive")}`) // ping the wolves in their chat          
+        
+        } else {
+        
+          // protection time
+          let result = await getProtections(client, guy, attacker)
+
+          if (typeof result === "object") {
+          
+            await require("./kittenWolf.js")(client, guy.id) // call this method to make new channels for a player being converted to a wolf
+
+          } else {
+
+            await werewolvesChat.send(`${getEmoji("guard", client)} Player **${players.indexOf(guy.id)+1} ${guy.username}** couldn't be converted into a Werewolf! They were either protected, aren't from the Village, or they are a Headhunter's target.`) // send an unsuccessful message
+            await werewolvesChat.send(`${guild.roles.cache.find(r => r.name === "Alive")}`) // ping the wolves in their chat
+
+          }
+          
         }
-      })
+
+      } else {
       
-      // check if they are a headhunter's target or do not belong to the village team
-      if (guy.team !== "Village" || headhunterTargets.includes(guy.id)) return false // exit early since they do not belong to the village or are the headhunter's target
-      
-    }
-    
-    // set the database of the player
-    db.set(`wolvesVote`, guy.id)
-    
-    // check if the player they are attacking is healed by the beast hunter
-    getResult = await beastHunter(client, guy, attacker) // checks if a beast hunter has a trap on them
-    if (getResult === true) { attackedByBeastHunter = true ; return false } // exits early if a beast hunter DOES have a trap on them
-    
-    // check if the player they are attacking is jailed
-    getResult = await jailer(client, guy, attacker) // checks if they are jailed
-    if (getResult === true) return false // exits early if they are jailed
-    
-    // check if the player they are attacking is healed by the ghost lady
-    getResult = await ghostLady(client, guy, attacker) // checks if a ghost lady is protecting them
-    if (getResult === true) return false // exits early if a ghost lady IS protecting them
-    
-    // check if the player they are attacking is healed by the doctor
-    getResult = await doctor(client, guy, attacker) // checks if a doctor is protecting them
-    if (getResult === true) return false // exits early if a doctor IS protecting them
-    
-    // check if the player they are attacking is healed by the witch
-    getResult = await witch(client, guy, attacker) // checks if a witch is protecting them
-    if (getResult === true) return false // exits early if a witch IS protecting them
-    
-    // check if the player they are attacking is healed by the bodyguard
-    getResult = await bodyguard(client, guy, attacker) // checks if a bodyguard is protecting them
-    if (getResult === true) return false // exits early if a bodyguard IS protecting them
-    
-    // check if getResult isn't an object
-      if (typeof getResult !== "object") {
+        // regular kill
         
-      // check if the player they are attacking is healed by the tough guy
-      getResult = await toughGuy(client, guy, attacker) // checks if a tough guy is protecting them
-      if (getResult === true) return false // exits early if a tough guy IS protecting them
-
-      // check if the player they are attacking is a red lady that got away visiting someone else
-      getResult = await redLady(client, guy, attacker) // checks if the red lady is not home
-      if (getResult === true) return false // exits early if the red lady IS not home
-
-      // check if the player they are protecting has the forger's sheild
-      getResult = await forger(client, guy) // checks if the player has the forger's sheild
-      if (getResult === true) return false // exits early if the player DOES have the forger's sheild
+        // check if they are a solo killer
+        if (["Bandit", "Corruptor", "Cannibal", "Illusionist", "Serial Killer", "Arsonist", "Bomber", "Alchemist", "Hacker", "Dreamcatcher"].includes(guy.role)) {
+        
+          await werewolvesChat.send(`${getEmoji("guard", client)} Player **${players.indexOf(guy.id)+1} ${guy.username}** couldn't be killed!`) // send an unsuccessful message
+          await werewolvesChat.send(`${guild.roles.cache.find(r => r.name === "Alive")}`) // ping the wolves in their chat
+        
+        } else {
+        
+          // check for protections
+          let result = await getProtections(client, guy, attacker)
+          
+          if (typeof result === "object") { // looks like there were no protections
+            
+            // kill the player
+            
+            db.set(`player_${result.id}.status`, "Dead") // set the player status to Dead
+            client.emit("playerKilled", db.get(`player_${result.id}`), attacker)
+            let member = await guild.members.fetch(result.id) // get the discord member
+            let memberRoles = member.roles.cache.map(r => r.name === "Alive" ? "892046207428476989" : r.id) // get the discord roles
+            await dayChat.send(`${getEmoji("werewolf", client)} The Werewolves killed **${players.indexOf(result.id)+1} ${result.username} (${getEmoji(result.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${result.role})**`)
+            await member.roles.set(memberRoles)
+          
+          } else {
+            
+            await werewolvesChat.send(`${getEmoji("guard", client)} Player **${players.indexOf(guy.id)+1} ${guy.username}** couldn't be killed!`) // send an unsuccessful message
+            await werewolvesChat.send(`${guild.roles.cache.find(r => r.name === "Alive")}`) // ping the wolves in their chat
+          
+          }
+        
+        }
+      
+      }
     }
-    
-    return typeof getResult === "object" ? getResult : guy // looks like there were no protections    
-    
-  } else {
-    return "0" // exit early if wolves selected no one to kill
-  }
-  
+
+  } 
+
+  return true
   
 }
 
