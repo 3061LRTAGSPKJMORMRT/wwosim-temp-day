@@ -40,11 +40,11 @@ No, I will not call it Wolvesville
 🟢 Dreamcatcher attacking         <br>
 🟢 Zombie biting                  <br>
 🟢 Zombie converting              <br>
-🔴 Grumpy Grandma muting          <br>
+🟢 Grumpy Grandma muting          <br>
+🟢 Medium reviving                <br>
 🔴 Jailer releasing target        <br>
 🔴 Nightmared players wake up     <br>
 🔴 Red lady visiting results      <br>
-🔴 Medium reviving                <br>
 🔴 Grave robber taking their role <br>
 🔴 Lovers getting coupled         <br>
 🔴 Forger giving sheild           <br>
