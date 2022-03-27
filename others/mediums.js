@@ -13,6 +13,9 @@ module.exports = async (client) => {
   for (const med of mediums) {
   
     let medium = db.get(`player_${med}`) // get the medium player - Object 
+    
+    db.delete(`player_${medium}.target`) // reset the target (Won't affect the current target, don't worry)
+    
     if (!medium.target) continue; // if the medium doesn't has a target, don't do anything and check for the next medium
     
     let guy = db.get(`player_${medium.target}`) // get the player who the medium had selected to revive
