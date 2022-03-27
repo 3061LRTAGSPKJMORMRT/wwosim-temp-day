@@ -42,16 +42,15 @@ No, I will not call it Wolvesville
 🟢 Zombie converting              <br>
 🟢 Grumpy Grandma muting          <br>
 🟢 Medium reviving                <br>
+🟡 Forger giving sheild           <br>
+🟡 Forger giving sword            <br>
+🟡 Grave robber taking their role <br>
 🔴 Jailer releasing target        <br>
 🔴 Nightmared players wake up     <br>
 🔴 Red lady visiting results      <br>
-🔴 Grave robber taking their role <br>
 🔴 Lovers getting coupled         <br>
-🔴 Forger giving sheild           <br>
-🔴 Forger giving sword            <br>
 🔴 Prognosticator making peace    <br>
 🔴 Prognosticator terrorizing     <br>
-~~🔴 Split wolf binding with others <br>~~
 🔴 Resetting votes, attacks etc.  <br>
 
 
