@@ -90,17 +90,18 @@ module.exports = async (client, alivePlayersBefore) => {
                 // check if the victim is alive
                 if (guy.status === "Alive") {
                     
-                    let results = await getProtections(client, guy, attacker) // gets the protections and checks the result
+                    let result = await getProtections(client, guy, attacker) // gets the protections and checks the result
                     
                     // check if there were no protections
-                    if (typeof results === "object") {
+                    if (typeof result === "object") {
                     
                         // kill the player
                         db.set(`player_${guy.id}.status`, "Dead") // changes the status of the victim
-                        await dayChat.send(`${getEmoji("evildetcheck", client)} The evil detective has killed **${players.indexOf(results.id)+1} ${results.username} (${getEmoji(results.role.toLowerCase().replace(/\s/g, "_"), client)} ${results.role})**!`)
+                        client.emit("playerKilled", db.get(`player_${result.id}`), attacker)
+                        await dayChat.send(`${getEmoji("evildetcheck", client)} The evil detective has killed **${players.indexOf(result.id)+1} ${result.username} (${getEmoji(result.role.toLowerCase().replace(/\s/g, "_"), client)} ${result.role})**!`)
 
                         // get the member and set their role
-                        let member = await guild.members.fetch(results.id) // fetches the discord member
+                        let member = await guild.members.fetch(result.id) // fetches the discord member
                         let memberRoles = member.roles.cache.map(r => r.name === "Alive" ? "892046207428476989" : r.id) // gets all the roles of this member
                         await member.roles.set(memberRoles) // sets the role for the member
                     
