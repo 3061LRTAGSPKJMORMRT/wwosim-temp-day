@@ -157,26 +157,48 @@ module.exports = async (client, alivePlayersBefore) => {
       if (guy.status === "Alive") {
         
         // check for any protections
-        let result = await getProtections(client, guy, attacker) // returns - Promise<Object|Boolean>
+        client.emit("playerKilled", db.get(`player_${result.id}`), attacker)
+          
+        // check if they tried converting non-village
+        if ((guy.team !== "Village") && !["Fool", "Headhunter"].includes(guy.role) || typeof guy.sected === "string" || guy.role === "Cursed" || guy.role === "President") {
         
-        // check if the result type is an object - indicating that there were no protections
-        if (typeof result === "object") {
-          
-          db.set(`player_${guy.id}.bitten`, true)
-          
-          let bittenBy = db.get(`player_${guy.id}.bittenBy`) || [] // get the bitten by array
-          bittenBy.push(attacker.id) // push the zombie into the array
-          db.set(`player_${guy.id}.bittenBy`, bittenBy) // set the database
-          
-          await zombiesChat.send(`${getEmoji("bitten", client)} Player **${players.indexOf(guy.id)+1} ${guy.username}** has been bitten.`) // sends a succesful message
-          
-        } else { // otherwise they were protected
-          
-          await zombiesChat.send(`${getEmoji("guard", client)} Player **${players.indexOf(guy.id)+1} ${guy.username}** could not be converted!`) // sends an error message
-          await zombiesChat.send(`${guild.roles.cache.find(r => r.name === "Alive")}`) // pings the player in the channel
+            await zombiesChat.send(`${getEmoji("guard", client)} Player **${players.indexOf(guy.id)+1} ${guy.username}** could not be converted!`) // sends an error message
+            await zombiesChat.send(`${guild.roles.cache.find(r => r.name === "Alive")}`) // pings the player in the channel
+            
+            // check if the player they bit is a wolf, and check if they aren't the original zombie
+            if (guy.team === "Werewolf" && guy.role !== "Sorcerer" && attacker.isOriginal !== true) {
+            
+                // kill the damn player
+                db.set(`player_${attacker.id}.status`, "Dead")
+                client.emit("playerKilled", db.get(`player_${guy.id}`), attacker)
+                let member = await guild.members.fetch(guy.id) // get the discord member
+                let memberRoles = member.roles.cache.map(r => r.name === "Alive" ? "892046207428476989" : r.id) // get the roles of the member
+                await dayChat.send(`${getEmoji("bitten", client)} Player **${players.indexOf(guy.id)+1} ${guy.username} (${getEmoji("zombie", client)} Zombie)** tried biting a werewolf and died.`) // sends the message
+                await member.roles.set(memberRoles) // set the roles
+                
+            }
         
+        } else {
+            let result = await getProtections(client, guy, attacker) // returns - Promise<Object|Boolean>
+
+            // check if the result type is an object - indicating that there were no protections
+            if (typeof result === "object") {
+
+              db.set(`player_${guy.id}.bitten`, true)
+
+              let bittenBy = db.get(`player_${guy.id}.bittenBy`) || [] // get the bitten by array
+              bittenBy.push(attacker.id) // push the zombie into the array
+              db.set(`player_${guy.id}.bittenBy`, bittenBy) // set the database
+
+              await zombiesChat.send(`${getEmoji("bitten", client)} Player **${players.indexOf(guy.id)+1} ${guy.username}** has been bitten.`) // sends a succesful message
+
+            } else { // otherwise they were protected
+
+              await zombiesChat.send(`${getEmoji("guard", client)} Player **${players.indexOf(guy.id)+1} ${guy.username}** could not be converted!`) // sends an error message
+              await zombiesChat.send(`${guild.roles.cache.find(r => r.name === "Alive")}`) // pings the player in the channel
+
+            }
         }
-        
       }
     
     }
