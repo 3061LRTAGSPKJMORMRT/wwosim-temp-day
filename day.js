@@ -73,9 +73,6 @@ module.exports = {
     // bh killing a wolf
     await beastHunterKilling(client)
     
-    // grave robber getting role
-    await graverobbers(client)
-    
     // medium reviving
     await mediums(client)
     
@@ -87,6 +84,9 @@ module.exports = {
     
     // sect leader converting
     await sectleaders(client)
+    
+    // grave robber getting role
+    await graverobbers(client)
     
     // arsonist dousing
     await arsonists(client)
