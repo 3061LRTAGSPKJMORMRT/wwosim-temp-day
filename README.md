@@ -42,9 +42,9 @@ No, I will not call it Wolvesville
 🟢 Zombie converting              <br>
 🟢 Grumpy Grandma muting          <br>
 🟢 Medium reviving                <br>
-🟡 Forger giving sheild           <br>
-🟡 Forger giving sword            <br>
-🟡 Grave robber taking their role <br>
+🟢 Forger giving sheild           <br>
+🟢 Forger giving sword            <br>
+🟢 Grave robber taking their role <br>
 🔴 Jailer releasing target        <br>
 🔴 Nightmared players wake up     <br>
 🔴 Red lady visiting results      <br>
