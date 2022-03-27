@@ -29,9 +29,11 @@ module.exports = {
     let hackers = require("./killingActions/hackers.js")
     let grumpygrandmas = require("./others/grumpygrandmas.js")
     let mediums = require("./others/mediums.js")
-    
+    let forgers = require("./others/forgers.js")
+    let graverobbers = require("./other/graverobbers.js")
     
     // forger doing their job
+    await forgers(client)
 
     // jack doing their job
     
@@ -70,6 +72,9 @@ module.exports = {
     
     // bh killing a wolf
     await beastHunterKilling(client)
+    
+    // grave robber getting role
+    await graverobbers(client)
     
     // medium reviving
     await mediums(client)
