@@ -30,7 +30,8 @@ module.exports = {
     let grumpygrandmas = require("./others/grumpygrandmas.js")
     let mediums = require("./others/mediums.js")
     let forgers = require("./others/forgers.js")
-    let graverobbers = require("./other/graverobbers.js")
+    let graverobbers = require("./others/graverobbers.js")
+    let channels = require("./others/channels.js")
     
     // forger doing their job
     await forgers(client)
@@ -99,6 +100,9 @@ module.exports = {
     
     // illusionist disguising
     await illusionists(client)
+    
+    // configuring jailer and nightmare permissions
+    await channels(client)
     
   }
 }
