@@ -24,7 +24,7 @@ module.exports = async (client) => {
         db.delete(`player_${prog}.peaceAt`) // delete the peaceAt
       
         // get all the evils, except bomber fool and headhunter
-        const evils = players.filter(p => db.get(`player_${p}`).role === "Red Lady" || (db.get(`player_${p}`).team !== "Village" && !["Fool", "Headhunter", "Bomber"].includes(db.get(`player_${p}`).role)))
+        const evils = players.filter(p => db.get(`player_${p}`).role === "Red Lady" || (db.get(`player_${p}`).team !== "Village" && !["Fool", "Headhunter", "Bomber", "Zombie"].includes(db.get(`player_${p}`).role)))
         
         // loop through each evildoer and remove their target
         evils.forEach(async evildoer => {
@@ -33,6 +33,13 @@ module.exports = async (client) => {
           } else {
             db.delete(`player_${evildoer}.target`) // deletes the target
           }
+          
+          // cannibal hunger won't go up
+          if (db.get(`player_${evildoer}`).role === "Cannibal") {
+            db.subtract(`player_${evildoer}.uses`, 1) // subtract the hunger
+          }
+          
+          
         })
     }
     
