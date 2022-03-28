@@ -92,7 +92,7 @@ module.exports.wolves = async (client, alivePlayersBefore) => {
   let toKill = "0" // store a player to kill, in string - String
   
   // get the wekeast wolf in game
-  let weakestWolf = alivePlayers.filter(a => strongWolves.includes(db.get(`player_${a}`))).map(a => [a, db.get(`player_${a}`).role]).sort((a, b) => strongWolves.indexOf(b[1]) - strongWolves.indexOf(a[1])) // fillter the wolves and check if there are any
+  let weakestWolf = alivePlayers.filter(a => strongWolves.includes(db.get(`player_${a}`).role)).map(a => [a, db.get(`player_${a}`).role]).sort((a, b) => strongWolves.indexOf(b[1]) - strongWolves.indexOf(a[1])) // fillter the wolves and check if there are any
   if (!weakestWolf) return toKill // exit early if no wolf was found
   
   let attacker = db.get(`player_${weakestWolf[0][0]}`) // get the attacker object
@@ -132,7 +132,7 @@ module.exports.wolves = async (client, alivePlayersBefore) => {
         
       let allSameVotes = totalVotes.filter(v => v[1] === totalVotes[0][1]) // filter to only votes that are tied
       let filteredVotes = Object.entries(votes).filter(x => allSameVotes.map(a => a[0]).includes(x[1])) // get the votes in an array but filtered 
-      let wolvesRank = filteredVotes.map(x => db.get(`role_${x[0]}`).role) // get all werewolves' role
+      let wolvesRank = filteredVotes.map(x => db.get(`player_${x[0]}`).role) // get all werewolves' role
       
       // sort the wolves in wolvesRank from weakest to strongest
       let sortedWolves = wolvesRank.map(a => strongWolves.indexOf(a)).sort((a, b) => b - a) // we map the wolves into numbers, then sort the numbers from big to small
@@ -171,7 +171,7 @@ module.exports.wolves = async (client, alivePlayersBefore) => {
 
           // check if their role is Headhunter
           if (db.get(`player_${player}`).role === "Headhunter") { 
-            headhunterTargets.push(db.get(`player_${player}`).headhunterTarget) // adds the headhunter's target to the list
+            headhunterTargets.push(db.get(`player_${player}`).target) // adds the headhunter's target to the list
           }
         })
 
