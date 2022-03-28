@@ -3,11 +3,11 @@ const { getEmoji } = require("../../../config") // functions
 
 module.export = async client => {
 
-  // let's get cupid's couple
-  const guild = client.guilds.cache.get("890234659965898813")
-  const players = db.get(`players`)
+  const guild = client.guilds.cache.get("890234659965898813") // get the guild object - Object
+  const players = db.get(`players`) // get the players array - Array<Snowflake>
   const cupids = players.filter(p => db.get(`player_${p}`).role === "Cupid") // get all cupids - Array<Snowflake>
   
+  // loop through each cupid
   for (const cupid of cupids) {
   
     let lovemaker = db.get(`player_${cupid}`) // get the couple - Array<Snowflake>
@@ -77,15 +77,71 @@ module.export = async client => {
     
     
     // send a message to both players
-    let couple1 = db.get(`player_${lovemaker.target[0]}`)
-    let couple2 = db.get(`player_${lovemaker.target[1]}`)
-    let channel1 = guild.channels.cache.get(couple1.channel)
-    let channel2 = guild.channels.cache.get(couple2.channel)
-    await channel1.send(`${getEmoji("couple", client)} You are in love with **${players.indexOf(couple2.id)+1} ${couple2.username} (${getEmoji(couple2.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${couple2.role})**. You win if you stay alive together until the end of the game. You die if your lover dies.`)
-    await channel1.send(`${guild.roles.cache.find(r => r.name === "Alive")}`)
-    await channel2.send(`${getEmoji("couple", client)} You are in love with **${players.indexOf(couple1.id)+1} ${couple1.username} (${getEmoji(couple1.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${couple1.role})**. You win if you stay alive together until the end of the game. You die if your lover dies.`)
-    await channel2.send(`${guild.roles.cache.find(r => r.name === "Alive")}`)
-    await 
+    let couple1 = db.get(`player_${lovemaker.target[0]}`) // get the first couple player
+    let couple2 = db.get(`player_${lovemaker.target[1]}`) // get the second couple player
+    let channel = guild.channels.cache.get(lovemaker.channel) // get the cupid's channel
+    let channel1 = guild.channels.cache.get(couple1.channel) // get the first couple's channel
+    let channel2 = guild.channels.cache.get(couple2.channel) // get the second couple'c channel
+    await channel1.send(`${getEmoji("couple", client)} You are in love with **${players.indexOf(couple2.id)+1} ${couple2.username} (${getEmoji(couple2.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${couple2.role})**. You win if you stay alive together until the end of the game. You die if your lover dies.`) // sends the love message
+    await channel1.send(`${guild.roles.cache.find(r => r.name === "Alive")}`) // pings the player
+    await channel2.send(`${getEmoji("couple", client)} You are in love with **${players.indexOf(couple1.id)+1} ${couple1.username} (${getEmoji(couple1.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${couple1.role})**. You win if you stay alive together until the end of the game. You die if your lover dies.`) // sends the love message
+    await channel2.send(`${guild.roles.cache.find(r => r.name === "Alive")}`) // pings the player
+    await channel.send(`${getEmoji("couple", client)} Player **${players.indexOf(couple1.id)+1} ${couple1.username}** and **${players.indexOf(couple2.id)} ${couple2.username}** are in love!`) // sends the confirmation message
+    
+    db.set(`player_${couple1.id}.couple`, couple2.id) // set the coupled player with the other player
+    db.set(`player_${couple2.id}.couple`, couple1.id) // set the coupled player with the other player
+    
+    // remove bomb, douse, corruption, and disguise from the player if their couple is the attacker
+    if (["Bomber", "Arsonist", "Corruptor", "Illusionist"].includes(couple1.role) || ["Bomber", "Arsonist", "Corruptor", "Illusionist"].includes(couple2.role)) {
+    
+      // now check if the first couple has targetted their second couple
+      if (couple1.target === couple2.id || couple1.target.includes(couple2.id)) {
+        
+        // send a message regarding the action of canceling their abilities on thier couple
+        await channel1.send(`${getEmoji("couple", client)} Since you have unconditional love with player **${players.indexOf(couple2.id)+1} ${couple2.username}**, you decided to cancel your action on this player.`)
+        await channel1.send(`${guild.roles.cache.find(r => r.name === "Alive")}`)
+        
+        // check if it's an array
+        if (Array.isArray(couple1.target)) {
+          
+          // delete the player from the array
+          let arr = couple1.target
+          delete arr[arr.indexOf(couple2.id)]
+          db.set(`player_${couple1.id}.target`, arr.filter(Boolean))
+          
+        } else {
+          
+          // delete the target database
+          db.delete(`player_${couple1.id}.target`)
+          
+        }
+      } 
+      
+      // now check if the second couple has targetted their first couple
+      if (couple2.target === couple1.id || couple2.target.includes(couple1.id)) {
+        
+        // send a message regarding the action of canceling their abilities on thier couple
+        await channel2.send(`${getEmoji("couple", client)} Since you have unconditional love with player **${players.indexOf(couple2.id)+1} ${couple2.username}**, you decided to cancel your action on this player.`)
+        await channel2.send(`${guild.roles.cache.find(r => r.name === "Alive")}`)
+      
+        // check if it's an array
+        if (Array.isArray(couple2.target)) {
+          
+          // delete the player from the array
+          let arr = couple2.target
+          delete arr[arr.indexOf(couple1.id)]
+          db.set(`player_${couple2.id}.target`, arr.filter(Boolean))
+          
+        } else {
+          
+          // delete the target database
+          db.delete(`player_${couple2.id}.target`)
+          
+        }
+      
+      }
+    
+    }
   }
 
 }
