@@ -49,8 +49,8 @@ No, I will not call it Wolvesville
 🟢 Lovers getting coupled         <br>
 🟢 Jailer releasing target        <br>
 🟢 Nightmared players wake up     <br>
-🔴 Prognosticator making peace    <br>
-🔴 Prognosticator terrorizing     <br>
+🟢 Prognosticator making peace    <br>
+🟢 Prognosticator terrorizing     <br>
 🔴 Resetting votes, attacks etc.  <br>
 
 
