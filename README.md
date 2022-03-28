@@ -45,9 +45,9 @@ No, I will not call it Wolvesville
 🟢 Forger giving sheild           <br>
 🟢 Forger giving sword            <br>
 🟢 Grave robber taking their role <br>
+🟢 Red lady visiting results      <br>
 🔴 Jailer releasing target        <br>
 🔴 Nightmared players wake up     <br>
-🔴 Red lady visiting results      <br>
 🔴 Lovers getting coupled         <br>
 🔴 Prognosticator making peace    <br>
 🔴 Prognosticator terrorizing     <br>
