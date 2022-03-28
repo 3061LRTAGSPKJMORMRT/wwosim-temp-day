@@ -27,6 +27,7 @@ module.exports = {
     let sectleaders = require("./killingActions/sectleaders.js")
     let evildetectives = require("./killingActions/evildetectives.js")
     let hackers = require("./killingActions/hackers.js")
+    let prognosticators = require("./others/prognosticators.js")
     let grumpygrandmas = require("./others/grumpygrandmas.js")
     let mediums = require("./others/mediums.js")
     let forgers = require("./others/forgers.js")
@@ -36,9 +37,10 @@ module.exports = {
     // forger doing their job
     await forgers(client)
 
-    // jack doing their job
-    
     // prognosticator peace doing their job
+    await prognosticators(client)
+    
+    // jack doing their job
     
     // if berserk is activated, wolves come first
     if (db.get(`isBerserkActive`) === true) {
