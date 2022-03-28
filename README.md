@@ -47,8 +47,8 @@ No, I will not call it Wolvesville
 🟢 Grave robber taking their role <br>
 🟢 Red lady visiting results      <br>
 🟢 Lovers getting coupled         <br>
-🔴 Jailer releasing target        <br>
-🔴 Nightmared players wake up     <br>
+🟢 Jailer releasing target        <br>
+🟢 Nightmared players wake up     <br>
 🔴 Prognosticator making peace    <br>
 🔴 Prognosticator terrorizing     <br>
 🔴 Resetting votes, attacks etc.  <br>
