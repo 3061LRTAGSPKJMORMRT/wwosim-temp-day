@@ -37,6 +37,9 @@ module.exports = async client => {
     
     // check if the arso has doused someone
     if (attacker.target) {
+        
+      // delete the targets 
+      db.delete(`player_${attacker.id}.target`) // don't worry, this won't affect the current target
       
       // loop through each douse
       for (let target of attacker.target) {
