@@ -77,7 +77,14 @@ module.exports = async (client, alivePlayersBefore) => {
     // check if the dc has a target
     if (attacker.target) {
       
+      // deletes the target
+      db.delete(`player_${attacker.id}.target`) // don't worry, this won't affect the current target
+        
       let guy = db.get(`player_${attacker.target}`)
+      
+      let dreamChannel = guild.channels.cache.get(attacker.dreamChannel)
+      
+      await dreamChannel?.delete()
       
       // check if the dc's target is alive
       if (guy.status === "Alive") {
@@ -93,7 +100,7 @@ module.exports = async (client, alivePlayersBefore) => {
           client.emit("playerKilled", db.get(`player_${result.id}`), attacker)
           let attackedPlayer = await guild.members.fetch(result.id) // fetch the discord member - Object
           let attackedPlayerRoles = attackedPlayer.roles.cache.map(r => r.name === "Alive" ? "892046207428476989" : r.id) // get all the roles and replace the Alive role with Dead.
-          await dayChat.send(`${getEmoji("", client)} The Dreamcatcher killed **${players.indexOf(result.id)+1} ${result.username} (${getEmoji(result.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${result.role})**!`)
+          await dayChat.send(`${getEmoji("dreamcatcher", client)} The Dreamcatcher killed **${players.indexOf(result.id)+1} ${result.username} (${getEmoji(result.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${result.role})**!`)
           await attackedPlayer.roles.set(attackedPlayerRoles) // removes the Alive and adds the Dead discord role
           
         } else { // otherwise they were protected
