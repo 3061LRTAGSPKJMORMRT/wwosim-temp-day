@@ -67,9 +67,13 @@ module.exports = async (client, alivePlayersBefore) => {
   const deadPlayers = players.filter(p => !alivePlayers.includes(p)) // get the dead players array - Array<Snowflake>
   const zombies = alivePlayers.filter(p => db.get(`player_${p}`).role === "Zombie") // get the alive Zombie array - Array<Snowflake>
   const bitten = alivePlayers.filter(p => db.get(`player_${p}`).bitten === true) // get all the valid bitten players - Array<Snowflake>
+  const proggies = players.filter(p => db.get(`player_${p}`).role === "Prognosticator") // get all the prognosticators
   
   // convert all zombies
   for (let bite of bitten) {
+      
+    // check if the prognosticator peace is active, and if so do not convert anyone
+    if (proggies.map(p => db.get(`player_${p}`)).filter(a => a.peace === true).length > 0) break;
   
     let guy = db.get(`player_${bite}`)
     
