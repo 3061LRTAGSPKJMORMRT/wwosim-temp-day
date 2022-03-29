@@ -82,9 +82,12 @@ module.exports = async (client, alivePlayersBefore) => {
         
       let guy = db.get(`player_${attacker.target}`)
       
-      let dreamChannel = guild.channels.cache.get(attacker.dreamChannel)
+      let dreamChannel = guild.channels.cache.get(attacker.dreamChannel) // get the dreamcatcher's temporary channel
       
-      await dreamChannel?.delete()
+      await dreamChannel?.delete() // delete the dreamcatcher's temporary channel
+        
+      // delete the target
+      db.delete(`player_${dc}.target`) // don't worry, this won't affect the current target
       
       // check if the dc's target is alive
       if (guy.status === "Alive") {
