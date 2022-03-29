@@ -73,6 +73,9 @@ module.exports = async (client) => {
     
     // check if the sk has a target
     if (attacker.target) {
+        
+      // delete the target
+      db.delete(`player_${sl}.target`) // don't worry, this won't affect the current target
       
       let guy = db.get(`player_${attacker.target}`)
       
