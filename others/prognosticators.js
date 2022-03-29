@@ -17,7 +17,7 @@ module.exports = async (client) => {
     let proggy = db.get(`player_${prog}`) // get the prognosticator player - Object 
     
     // check if peace is active, the prog is alive and it's been the next night
-    if (proggy.peace === true && proggy.status === "Alive") {
+    if (proggy.peace === true) {
       
       if (proggy.peaceAt === night - 1)
         db.delete(`player_${prog}.peace`) // delete the peace
