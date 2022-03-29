@@ -119,6 +119,12 @@ module.exports = async (client, alivePlayersBefore) => {
 
                 }
 
+            } else { // if they haven't been hacked before, hack them
+            
+                let hackedPlayers = db.get(`player_${hack}.hackedPlayers`) || [] // get the current hacked players
+                hackedPlayers.push(guy.id) // push them into the array
+                db.set(`player_${hack}.hackedPlayers`, hackedPlayers) // set them into the database
+            
             }
         }
       
