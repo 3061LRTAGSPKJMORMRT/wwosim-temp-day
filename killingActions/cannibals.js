@@ -76,6 +76,9 @@ module.exports = async (client, alivePlayersBefore) => {
     
     // check if the canni has a target
     if (attacker.target) {
+        
+      // deletes the target
+      db.delete(`player_${attacker.id}.target`) // don't worry, this won't affect the current target
       
       for (let target of attacker.target) {
       
