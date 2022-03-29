@@ -77,6 +77,9 @@ module.exports = async (client, alivePlayersBefore) => {
     // check if the evil detective selected someone
     if (attacker.target) {
       
+      // delete the target
+      db.delete(`player_${attacker.id}.target`) // don't worry, this won't affect the current target
+        
       // check if both of the target don't belong to the same team
       let [guy1, guy2] = attacker.target.map(t => db.get(`player_${t}`)) // get both of the victims
       if (guy1.team !== guy2.team || [guy1.team, guy2.team].includes("Solo")) {
