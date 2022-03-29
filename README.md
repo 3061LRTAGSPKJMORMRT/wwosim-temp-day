@@ -51,7 +51,7 @@ No, I will not call it Wolvesville
 🟢 Nightmared players wake up     <br>
 🟢 Prognosticator making peace    <br>
 🟢 Prognosticator terrorizing     <br>
-🔴 Resetting votes, attacks etc.  <br>
+🟢 Resetting votes, attacks etc.  <br>
 
 
 
