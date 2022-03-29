@@ -80,8 +80,11 @@ module.exports = async (client) => {
     
     // check if the bandit selected someone
     if (attacker.accomplice) {
+        
+      // delete the accomplice database
+      db.delete(`player_${attacker.id}.accomplice`) // don't worry, this won't affect the current accomplice
       
-      let guy = db.get(`player_${attacker.accomplice}`)
+      let guy = db.get(`player_${attacker.accomplice}`) // get's the current guy object
       
       // check if the bandit's target is alive
       if (guy.status === "Alive") {
