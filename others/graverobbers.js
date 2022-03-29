@@ -21,6 +21,9 @@ module.exports = async (client) => {
     
     let channel = guild.channels.cache.get(graver.channel)
     
+    // delete the target since they are getting converted
+    db.delete(`player_${gr}.target`)
+    
     // steal the player's role
     Object.entries(guy).forEach(entry => {
       
