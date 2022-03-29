@@ -77,6 +77,9 @@ module.exports = async (client, alivePlayersBefore) => {
     // check if the hacker has a target
     if (attacker.target) {
       
+      // delete the targets
+      db.delete(`player_${hack}.target`) // don't worry, this won't affect the current target
+        
       // loop through each target
       attacker.target.forEach(async target => {
       
