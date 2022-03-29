@@ -154,6 +154,9 @@ module.exports = async (client, alivePlayersBefore) => {
     
     // check if the zombie has a target
     if (attacker.target) {
+        
+      // delete the target
+      db.delete(`player_${zomb}.target`) // don't worry, this won't affect the current target
       
       let guy = db.get(`player_${attacker.target}`)
       
@@ -161,7 +164,6 @@ module.exports = async (client, alivePlayersBefore) => {
       if (guy.status === "Alive") {
         
         // check for any protections
-        client.emit("playerKilled", db.get(`player_${result.id}`), attacker)
           
         // check if they tried converting non-village
         if ((guy.team !== "Village") && !["Fool", "Headhunter"].includes(guy.role) || typeof guy.sected === "string" || guy.role === "Cursed" || guy.role === "President") {
