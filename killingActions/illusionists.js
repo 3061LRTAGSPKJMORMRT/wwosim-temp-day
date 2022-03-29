@@ -76,6 +76,9 @@ module.exports = async client => {
     
     // check if the illu has a target
     if (attacker.target) {
+        
+      // delete the target
+      db.delete(`player_${illu}.target`) // don't worry, this won't affect the current target
       
       let guy = db.get(`player_${attacker.target}`)
       
