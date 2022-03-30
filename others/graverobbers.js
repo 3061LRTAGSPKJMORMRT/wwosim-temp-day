@@ -28,13 +28,17 @@ module.exports = async (client) => {
     Object.entries(guy).forEach(entry => {
       
       // copy relevant info from the dead player
-      if (!["username", "id", "status", "channel"].includes(entry[0])) {
+      if (!["username", "id", "status", "channel", "allRoles"].includes(entry[0])) {
         db.set(`player_${gr}.${entry[0]}`, entry[1])
       }
       
     })
     
-    
+    // set their previous roles into the database, for logs
+    let previousRoles = db.get(`player_${gr}.allRoles`) || ["Grave Robber"] // get their previous roles, if any
+    previousRoles.push(db.get(`player_${gr}.role`)) // push them to the array
+    db.set(`player_${gr}.allRoles`, previousRoles) // set them into the database
+     
     // create the channel
     const newChannel = await guild.channels.create(`priv-${guy.role.toLowerCase().replace(/\s/g, "-")}`, { 
         parent: "892046231516368906", // the category id
