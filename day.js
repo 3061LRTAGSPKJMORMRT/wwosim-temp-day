@@ -7,7 +7,7 @@ module.exports = {
     const aliveRole = message.guild.roles.cache.find(r => r.name === "Alive") // get the alive role - Object
     const deadRole = message.guild.roles.cache.find(r => r.name === "Dead") // get the dead role - Object
     const players = db.get(`players`) // get the players
-    const alivePlayers = players.fillter(player => db.get(`player_${player}`).status === "Alive")
+    const alivePlayers = players.filter(player => db.get(`player_${player}`).status === "Alive")
     const deadPlayers = players.filter(player => !alivePlayers.includes(player))
     
     // get all the actions
