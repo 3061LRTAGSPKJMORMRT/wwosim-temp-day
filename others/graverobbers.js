@@ -28,7 +28,7 @@ module.exports = async (client) => {
     Object.entries(guy).forEach(entry => {
       
       // copy relevant info from the dead player
-      if (!["username", "id"].includes(entry[0])) {
+      if (!["username", "id", "status", "channel"].includes(entry[0])) {
         db.set(`player_${gr}.${entry[0]}`, entry[1])
       }
       
