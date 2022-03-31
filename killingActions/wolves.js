@@ -118,11 +118,11 @@ module.exports.wolves = async (client, alivePlayersBefore) => {
   // loop through each vote and add it to the object
   Object.entries(votes).forEach(vote => {
     if (!voteObject[vote[1]]) voteObject[vote[1]] = 0 // if the key doesn't exist, create one
-    voteObject[vote]++ // increment the value by 1 for the key
+    voteObject[vote[1]]++ // increment the value by 1 for the key
     
     // check if the role is Alpha Werewolf
     if (db.get(`player_${vote[0]}`).role === "Alpha Werewolf") {
-        voteObject[vote]++ // increment the value again since the alpha werewolf has double votes
+        voteObject[vote[1]]++ // increment the value again since the alpha werewolf has double votes
     }
   })
   
