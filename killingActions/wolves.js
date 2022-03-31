@@ -92,7 +92,10 @@ module.exports.wolves = async (client, alivePlayersBefore) => {
   let toKill = "0" // store a player to kill, in string - String
   
   // get the wekeast wolf in game
-  let weakestWolf = alivePlayers.filter(a => strongWolves.includes(db.get(`player_${a}`).role)).map(a => [a, db.get(`player_${a}`).role]).sort((a, b) => strongWolves.indexOf(b[1]) - strongWolves.indexOf(a[1])) // fillter the wolves and check if there are any
+  let weakestWolf = alivePlayers.filter(a => strongWolves.includes(db.get(`player_${a}`).role))
+    .map(a => [a, db.get(`player_${a}`).role])
+    .sort((a, b) => strongWolves.indexOf(a[1]) - strongWolves.indexOf(b[1])) // fillter the wolves and check if there are any
+  
   if (!weakestWolf) return toKill // exit early if no wolf was found
   
   let attacker = db.get(`player_${weakestWolf[0][0]}`) // get the attacker object
