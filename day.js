@@ -33,6 +33,7 @@ module.exports = {
     let forgers = require("./others/forgers.js")
     let graverobbers = require("./others/graverobbers.js")
     let channels = require("./others/channels.js")
+    let couple = require("./others/couple.js")
     
     // forger doing their job
     await forgers(client)
@@ -90,6 +91,9 @@ module.exports = {
     
     // grave robber getting role
     await graverobbers(client)
+    
+    // cupid coupleing players
+    await couple(client)
     
     // arsonist dousing
     await arsonists(client)
