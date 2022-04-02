@@ -68,6 +68,7 @@ module.exports = async client => {
   const alivePlayers = players.filter(p => db.get(`player_${p}`).status === "Alive") // get the alive players array - Array<Snowflake>
   const deadPlayers = players.filter(p => !alivePlayers.includes(p)) // get the dead players array - Array<Snowflake>
   const corruptors = alivePlayers.filter(p => db.get(`player_${p}`).role === "Corruptor") // get the alive Corruptors array - Array<Snowflake>
+  const cupid = players.find(p => db.get(`player_${p}`).role === "Cupid") // get the Cupid player - String
   
   // loop through each corruptor
   for (let corr of corruptors) {
@@ -92,8 +93,8 @@ module.exports = async client => {
             
           let guyChannel = guild.channels.cache.get(result.channel) // get the channel of the corrupted player
           
-          // check if player is corrupted to avoid duplicate messages
-          if (result.corrupted === true) {
+          // check if player is corrupted to avoid duplicate messages and make sure they aren't a player that is coupled
+          if (result.corrupted !== true && !db.get(`player_${cupid}`).target?.includes(result.id) && !db.get(`player_${cupid}`).target?.includes(attacker.id)) {
             
               // corrupt and send a message to the corrupted player              
               db.set(`player_${guy.id}.corrupted`, true) // corrupt the player
@@ -109,6 +110,15 @@ module.exports = async client => {
           
           // send a message to the corruptor            
           await channel.send(`${getEmoji("corrupt", client)} Player **${players.indexOf(result.id)+1} ${result.username}** has been corrupted.`) // sends a succesful message
+            
+          // check if they are coupled
+          if (db.get(`player_${cupid}`).target?.includes(result.id) && db.get(`player_${cupid}`).target?.includes(attacker.id)) {
+              
+            // revert their actions
+            await channel.send(`${getEmoji("couple", client)} Since you have unconditional love with player **${players.indexOf(result.id)+1} ${result.username}**, you decided to cancel your action on this player.`) // send a message to the player
+            await channel.send(`${guild.roles.cache.find(r => r.name === "Alive")}`) // ping the player
+            db.delete(`player_${attacker.id}.target`) // delete the target from the database
+          }
           
           
         } else { // otherwise they were protected
