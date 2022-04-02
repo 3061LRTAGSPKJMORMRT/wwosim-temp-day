@@ -80,20 +80,14 @@ module.exports = {
     // medium reviving
     await mediums(client)
     
-    // grumpy grandma muting
-    await grumpygrandmas(client)
+    // sect leader converting
+    await sectleaders(client)
     
     // zombies converting and biting
     await zombies(client, alivePlayers)
     
-    // sect leader converting
-    await sectleaders(client)
-    
     // grave robber getting role
     await graverobbers(client)
-    
-    // cupid coupleing players
-    await couple(client)
     
     // arsonist dousing
     await arsonists(client)
@@ -106,6 +100,9 @@ module.exports = {
     
     // illusionist disguising
     await illusionists(client)
+    
+    // grumpy grandma muting
+    await grumpygrandmas(client)
     
     // configuring jailer and nightmare permissions
     await channels(client)
