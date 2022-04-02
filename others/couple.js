@@ -12,7 +12,7 @@ module.exports.getCoupleTargets = async client => {
   if (night !== 1) return true; // exit early if night isn't night 1
   
   // loop through each cupid (Usually there's one, but just in case there's a crazy gamemode)
-  for (const cupid of cupid) {
+  for (const cupid of cupids) {
     
     let lovemaker = db.get(`player_${cupid}`) // get the cupid object - Object
     
