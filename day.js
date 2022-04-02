@@ -78,7 +78,7 @@ module.exports = {
     await beastHunterKilling(client)
     
     // get couple targets
-    async getCoupleTargets(client)
+    await getCoupleTargets(client)
     
     // medium reviving
     await mediums(client)
