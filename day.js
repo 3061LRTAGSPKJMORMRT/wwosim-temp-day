@@ -104,6 +104,9 @@ module.exports = {
     // grumpy grandma muting
     await grumpygrandmas(client)
     
+    // couple
+    await couple(client)
+    
     // configuring jailer and nightmare permissions
     await channels(client)
     
