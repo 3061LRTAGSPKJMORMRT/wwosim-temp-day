@@ -1,23 +1,25 @@
 const db = require("quick.db") // database
 const { getEmoji } = require("../../../config") // functions
 
-module.export = async client => {
+module.exports.getCoupleTargets = async client => {
 
   const guild = client.guilds.cache.get("890234659965898813") // get the guild object - Object
   const players = db.get(`players`) // get the players array - Array<Snowflake>
+  const alivePlayers = players.filter(p => db.get(`player_${p}`).status === "Alive") // get the alive players array - Array<Snowflake>
   const cupids = players.filter(p => db.get(`player_${p}`).role === "Cupid") // get all cupids - Array<Snowflake>
+  const night = ( db.get(`gamePhase`) / 3 ) + 1 // get the night info - Number
   
-  // loop through each cupid
-  for (const cupid of cupids) {
+  if (night !== 1) return true; // exit early if night isn't night 1
   
-    let lovemaker = db.get(`player_${cupid}`) // get the couple - Array<Snowflake>
+  // loop through each cupid (Usually there's one, but just in case there's a crazy gamemode)
+  for (const cupid of cupid) {
     
-    db.delete(`player_${cupid}.target`) // delete the database targets (this won't affect the current target, don't worry)
+    let lovemaker = db.get(`player_${cupid}`) // get the cupid object - Object
     
-    // check if the cupid has enough alive targets. Otherwise assign the targets.
-    if (!lovemaker.target || lovemaker.target.filter(t => db.get(`player_${t}`).status === "Alive").length < 2) {
-    
-      // asign the targets
+    // check if the cupid had not set any lovers, or there aren't enough alive players
+    if (!lovemaker.target || lovemaker.target?.filter(p => alivePlayers.includes(p))?.length < 2) {
+      
+      // assign the targets
       let target = lovemaker.target?.filter(t => db.get(`player_${t}`)) || []
       
       // check how many players are there
@@ -40,7 +42,7 @@ module.export = async client => {
           // get a new couple
           let theCouple = newTarget[Math.floor(Math.random() * target.length)] // get a random player
           target.push(theCouple) // push into the array
-          lovemaker.target = target // assign the cupid's target as the current one.
+          db.set(`player_${lovemaker.id}.target`, target) // assign the cupid's target as the current one.
         
         }
       
@@ -67,14 +69,34 @@ module.export = async client => {
           // push the couple into the array
           target.push(theFirstCouple) // push the first couple
           target.push(theSecondCouple) // push the second couple
-          lovemaker.target = target // assign the cupid's target as the current one.
+          db.set(`player_${lovemaker.id}.target`, target) // assign the cupid's target as the current one.
         
         }
         
       }
+        
       
     }
+  
+  }
+
+}
+
+module.exports.couple = async client => {
+
+  const guild = client.guilds.cache.get("890234659965898813") // get the guild object - Object
+  const players = db.get(`players`) // get the players array - Array<Snowflake>
+  const cupids = players.filter(p => db.get(`player_${p}`).role === "Cupid") // get all cupids - Array<Snowflake>
+  const night = ( db.get(`gamePhase`) / 3 ) + 1 // get the night info - Number
+  
+  if (night !== 1) return true; // exit early if night isn't night 1
+  
+  // loop through each cupid
+  for (const cupid of cupids) {
+  
+    let lovemaker = db.get(`player_${cupid}`) // get the couple - Array<Snowflake>
     
+    db.delete(`player_${cupid}.target`) // delete the database targets (this won't affect the current target, don't worry)
     
     // send a message to both players
     let couple1 = db.get(`player_${lovemaker.target[0]}`) // get the first couple player
