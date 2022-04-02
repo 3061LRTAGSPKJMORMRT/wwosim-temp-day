@@ -134,6 +134,12 @@ module.export = async client => {
             db.set(`player_${couple1.id}.target`, bombs.filter(Boolean)) // deletes the bomb on the player
             break;
           }
+          case "Hacker": {
+            let hackedPlayers = db.get(`player_${couple1.id}.hackedPlayers`) || [] // get all the hacked players
+            delete hackedPlayers[hackedPlayers.indexOf(couple2.id)]
+            db.set(`player_${couple1.id}.hackedPlayers`, hackedPlayers.filter(Boolean)) // deletes the hacked player
+            break;
+          }
           case "Illusionist": {
             let disguises = db.get(`player_${couple1.id}.disguisedPlayers`) || [] // // gets all the disguises
             delete disguises[disguises.indexOf(couple2.id)] // // deletes the illusionist's couple's disguise
@@ -186,6 +192,12 @@ module.export = async client => {
             let bombs = db.get(`player_${couple2.id}.target`) || [] // gets all the bombs
             delete bombs[bombs.indexOf(couple1.id)] // deletes the bombers's couple's bombs
             db.set(`player_${couple2.id}.target`, bombs.filter(Boolean)) // deletes the bomb on the player
+            break;
+          }
+          case "Hacker": {
+            let hackedPlayers = db.get(`player_${couple2.id}.hackedPlayers`) || [] // get all the hacked players
+            delete hackedPlayers[hackedPlayers.indexOf(couple1.id)]
+            db.set(`player_${couple2.id}.hackedPlayers`, hackedPlayers.filter(Boolean)) // deletes the hacked player
             break;
           }
           case "Illusionist": {
