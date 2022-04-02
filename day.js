@@ -33,7 +33,7 @@ module.exports = {
     let forgers = require("./others/forgers.js")
     let graverobbers = require("./others/graverobbers.js")
     let channels = require("./others/channels.js")
-    let couple = require("./others/couple.js")
+    let { getCoupleTargets, couple } = require("./others/couple.js")
     
     // forger doing their job
     await forgers(client)
@@ -76,6 +76,9 @@ module.exports = {
     
     // bh killing a wolf
     await beastHunterKilling(client)
+    
+    // get couple targets
+    async getCoupleTargets(client)
     
     // medium reviving
     await mediums(client)
