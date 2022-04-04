@@ -33,6 +33,7 @@ module.exports = {
     let forgers = require("./others/forgers.js")
     let graverobbers = require("./others/graverobbers.js")
     let channels = require("./others/channels.js")
+    let redladies = require("./others/redladies.js")
     let { getCoupleTargets, couple } = require("./others/couple.js")
     
     // forger doing their job
@@ -40,6 +41,9 @@ module.exports = {
 
     // prognosticator peace doing their job
     await prognosticators(client)
+    
+    // red ladies doing their dirty work
+    await redladies(client)
     
     // jack doing their job
     
