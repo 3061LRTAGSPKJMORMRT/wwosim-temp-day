@@ -70,35 +70,42 @@ module.exports.wolves = async (client, alivePlayersBefore) => {
   const players = db.get(`players`) || [] // get the players array - Array<Snowflake>
   const alivePlayers = players.filter(p => db.get(`player_${p}`).status === "Alive") // get the alive players array - Array<Snowflake>
   const deadPlayers = players.filter(p => !alivePlayers.includes(p)) // get the dead players array - Array<Snowflake>
-  const strongWolves = [
-    "Werewolf", 
-    "Junior Werewolf",
-    "Split Wolf",
-    "Nightmare Werewolf", 
-    "Kitten Wolf", 
-    "Wolf Shaman", 
-    "Wolf Pacifist",
-    "Shadow Wolf", 
-    "Guardian Wolf", 
-    "Werewolf Berserk", 
-    "Alpha Werewolf", 
-    "Wolf Trickster",
-    "Wolf Seer", 
-    "Lone Wolf"
-  ] // list the wolves from weakest to strongest
+  const strongWolves = {
+    "Werewolf": 1,
+    "Junior Werewolf": 2, 
+    "Split Wolf": 2, 
+    "Kitten Wolf": 2,
+    "Wolf Shaman": 3, 
+    "Nightmare Werewolf": 3, 
+    "Voodoo Werewolf": 3, 
+    "Wolf Trickster": 3,
+    "Wolf Pacifist": 4, 
+    "Guardian Wolf": 4,
+    "Shadow Wolf": 5, 
+    "Werewolf Berserk": 5,
+    "Alpha Werewolf": 6, 
+    "Stubborn Werewolf": 6,
+    "Wolf Seer": 7,
+    "Lone Wolf": 8
+  } // list the wolves from weakest to strongest
 
   
   let votes = {} // make an object to store the votes - Object<UserId, Vote>
   let toKill = "0" // store a player to kill, in string - String
   
   // get the wekeast wolf in game
-  let weakestWolf = alivePlayers.filter(a => strongWolves.includes(db.get(`player_${a}`).role))
-    .map(a => [a, db.get(`player_${a}`).role])
-    .sort((a, b) => strongWolves.indexOf(a[1]) - strongWolves.indexOf(b[1])) // fillter the wolves and check if there are any
+  let mappedWolf = alivePlayers.filter(a => db.get(`player_${a}`).role?.toLowerCase().includes("wolf"))
+    .map(a => [a, db.get(`player_${a}`).role]) // fillter the wolves and check if there are any
   
-  if (!weakestWolf) return toKill // exit early if no wolf was found
   
-  let attacker = db.get(`player_${weakestWolf[0][0]}`) // get the attacker object
+  if (!mappedWolf.length === 0) return toKill // exit early if no wolf was found
+    
+  let sortedWolves = mappedWolf.sort((a, b) => strongWolves[mappedWolf[a][1]]-strongWolves[mappedWolf[b][1]]) // sort the wolves from weakest to strongest
+  
+  let weakestWolf = mappedWolf.filter(w => strongWolves[w[1]] === strongWolves[sortedWolves[0][1]]) // get all players with the same wolf rank
+  
+  let attacker = db.get(`player_${weakestWolf[Math.floor(Math.random() * weakestWolf.length)][0]}`) // get the attacker object
+  
   confirmedWeakestWolf = attacker
   
   // loop through all the alive players and get the votes from werewolves
