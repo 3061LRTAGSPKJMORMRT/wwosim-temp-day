@@ -80,20 +80,24 @@ module.exports = async client => {
     await rChannel.send(`${getEmoji("redp", client)} The Alchemist has sent you a potion. Sadly, you cannot make out the colour... you might die at the end of the day.`)
     await rChannel.send(`${guild.roles.cache.find(r => r.name === "Alive")}`)
     
-    // check if the player was already given a red potion before
-    if (attacker.redPotions?.includes(rVictim.id)) {
+    // check if red potion exists
+    if (attacker.redTarget) {
       
-      // set that they will die at night because of alchemist
-      let allRedPotions = db.get(`player_${attacker.redTarget}.poisoned`) || [] // gets all the Alchemists id who poisoned this player - Array<Snowflake>
-      allRedPotions.push(attacker.id) // pushes the attacker to the alchemist list
-      db.set(`player_${attacker.redTarget}.poisoned`, allRedPotions) // sets the new array
+        // check if the player was already given a red potion before
+        if (attacker.redPotions?.includes(rVictim.id)) {
       
-    } else { // otherwise add the player into the redPotions array
+            // set that they will die at night because of alchemist
+            let allRedPotions = db.get(`player_${attacker.redTarget}.poisoned`) || [] // gets all the Alchemists id who poisoned this player - Array<Snowflake>
+            allRedPotions.push(attacker.id) // pushes the attacker to the alchemist list
+            db.set(`player_${attacker.redTarget}.poisoned`, allRedPotions) // sets the new array
       
-      let redPotions = attacker.redPotions || [] // get the players who have been given a red potion - Array
-      redPotions.push(rVictim.id) // pushes the player into the array
-      db.set(`player_${attacker.id}.redPotions`, redPotions) // set them into the database
+        } else { // otherwise add the player into the redPotions array
       
+            let redPotions = attacker.redPotions || [] // get the players who have been given a red potion - Array
+            redPotions.push(rVictim.id) // pushes the player into the array
+            db.set(`player_${attacker.id}.redPotions`, redPotions) // set them into the database
+              
+        }
     }
     
     // check if the alch has given a black potion to a player
