@@ -24,7 +24,7 @@ module.exports = async (client, guy, attacker) => {
     if (db.get(`player_${player}`).role === "Beast Hunter") {
       
       // check and see if the Beast Hunter's trap is on the attacked player and the trap is active
-      if (db.get(`player_${player}`).trap === guy.id && db.get(`player_${player}`).placed === true) {
+      if (db.get(`player_${player}`).target === guy.id && db.get(`player_${player}`).placed === true) {
         
         // remove the trap from the player
         db.delete(`player_${player}.trap`)
