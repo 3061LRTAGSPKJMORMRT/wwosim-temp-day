@@ -119,7 +119,7 @@ module.exports = async client => {
           let guyChannel = guild.channels.cache.get(result.channel) // get the channel of the player that was given a potion
           
           // check if player is poisoned to avoid duplicate messages
-          if (typeof result.poisoned !== "string") {
+          if (typeof result.poisoned !== "object") {
             
               // set their poisoned status and send a message   
               let allAlchemistPotions = db.get(`player_${result.id}.poisoned`) || [] // gets all the alchemist ids, in array, that have poisoned this player - Array<Snowflake>
